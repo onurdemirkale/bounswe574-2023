@@ -1,0 +1,34 @@
+{% if learning_spaces %} {% for l in learning_spaces %}
+<div class="col-md-4">
+	<div class="card mb-4 box-shadow">
+		<img
+			class="card-img-top"
+			style="max-width: 400px; width: 100%"
+			src="{{l.thumbnail.url}}"
+			alt="Learning Space Image"
+		/>
+		<div class="card-body">
+			<h2>{{l.title}}</h2>
+			<div class="scrollable">
+				<p class="card-text">{{l.overview}}</p>
+			</div>
+			<div class="d-flex justify-content-between align-items-center">
+				<div class="btn-group">
+					<a
+						class="btn btn-sm btn-outline-secondary"
+						href="/learningspace/{{l.id}}"
+						>View</a
+					>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}{% endif %}
+
+<style>
+	.scrollable {
+		overflow-y: scroll;
+		max-height: 150px;
+	}
+</style>

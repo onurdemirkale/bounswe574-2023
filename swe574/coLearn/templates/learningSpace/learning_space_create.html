@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta
+			name="description"
+			content="swe 573 projet, co-learn web application"
+		/>
+		<meta name="author" content="onur demirkale" />
+
+		<title>Co-Learn</title>
+
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
+	</head>
+	<body class="bg-light">
+		<!-- Navbar -->
+		{%include 'navbar_auth.html'%}
+		<!-- Navbar End -->
+		<div class="container">
+			<div class="py-5 text-center">
+				<h2>Create Learning Space</h2>
+			</div>
+			<div class="flex-row justify-content-center d-flex">
+				<form method="POST" action="." class="needs-validation" enctype="multipart/form-data" novalidate>
+					{% csrf_token %}
+					<div class="form-group">
+						<label>Title</label>
+						<input
+							type="text"
+							name="title"
+							class="form-control"
+							placeholder="Title"
+							required
+						/>
+						<div class="invalid-feedback">Please provide a title.</div>
+					</div>
+
+					<div class="form-group">
+						<label>Overview</label>
+						<textarea
+							class="form-control"
+							name="overview"
+							rows="3"
+							required
+						></textarea>
+						<div class="invalid-feedback">Please provide an overview.</div>
+					</div>
+
+					<div class="form-group">
+						<label>Prerequisites</label>
+						<input
+							type="text"
+							name="prerequisites"
+							class="form-control"
+							placeholder="Prerequisite 1, Prerequisite 2..."
+						/>
+					</div>
+
+					<div class="form-group">
+						<labelf>Keywords</label>
+						<input
+							type="text"
+							name="keywords"
+							class="form-control"
+							placeholder="Keyword 1, Keyword 2..."
+						/>
+					</div>
+
+					<div class="form-group">
+						<div class="custom-file">
+							<input
+								type="file"
+								name="thumbnail"
+								accept="image/png, image/gif, image/jpeg"
+								class="custom-file-input"
+								required
+							/>
+							<label class="custom-file-label"
+								>Choose a thumbnail...</label
+							>
+							<div class="invalid-feedback">Invalid thumbnail.</div>
+						</div>
+					</div>
+					<div class="form-group row d-flex justify-content-center">
+						<div class="text-center form-group">
+							<button class="btn btn-primary" type="submit">Create</button>
+						</div>
+						<div>&nbsp;&nbsp;&nbsp;</div>
+						<div>
+							<a class="btn btn-secondary" href="/explore"
+								>Cancel</a
+							>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Footer -->
+		{%include 'footer.html'%}
+		<!-- Footer end-->
+	</body>
+</html>
+
+<!-- JavaScript for disabling form submissions if there are invalid fields -->
+<script>
+	(function () {
+		'use strict';
+		window.addEventListener(
+			'load',
+			function () {
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.getElementsByClassName('needs-validation');
+				// Loop over them and prevent submission
+				var validation = Array.prototype.filter.call(forms, function (form) {
+					form.addEventListener(
+						'submit',
+						function (event) {
+							if (form.checkValidity() === false) {
+								event.preventDefault();
+								event.stopPropagation();
+							}
+							form.classList.add('was-validated');
+						},
+						false
+					);
+				});
+			},
+			false
+		);
+	})();
+</script>
+<!-- JavaScript End -->

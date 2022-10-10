@@ -1,0 +1,33 @@
+<aside class="col-md-4 blog-sidebar">
+	<div class="p-3 mb-3 bg-light rounded">
+		<h4>Users</h4>
+		<ol class="list-unstyled mb-0">
+			<!-- User List -->
+			<li>
+				<ul>
+					{% if subscribers %} {% for s in subscribers %}
+					<li>
+						<a href="{% url 'user-profile' s.user.id %}">{{s.user.username}}</a>
+					</li>
+					{% endfor %}{% endif %}
+				</ul>
+			</li>
+			<!-- User List End-->
+		</ol>
+	</div>
+
+	<div class="p-3 mb-3 bg-light rounded">
+		<h4>Related Spaces</h4>
+		<ol class="list-unstyled mb-0">
+			<!-- Related Spaces List -->
+			<ul>
+				{% if related_spaces %} {% for r in related_spaces %}
+				<li>
+					<a href="{% url 'learning-space' r.id %}">{{r.title}}</a>
+				</li>
+				{% endfor %}{% endif %}
+			</ul>
+			<!-- Related Spaces List End-->
+		</ol>
+	</div>
+</aside>
