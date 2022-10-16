@@ -1,5 +1,5 @@
 """
-WSGI config for swe573 project.
+WSGI config for swe574 project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'swe573.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'swe574.settings')
 
 application = get_wsgi_application()
