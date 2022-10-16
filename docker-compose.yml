@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=swe574
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+  web:
+    build:
+      context: .
+    command: >
+      sh -c "python ./swe574/manage.py wait_for_db &&
+             python ./swe574/manage.py makemigrations &&
+             python ./swe574/manage.py migrate &&
+             python ./swe574/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./swe574:/swe574
+      - ./data/web:/vol/web
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=db
+      - DB_NAME=swe574
+      - DB_PASSWORD=admin
+      - DB_USER=admin
+      - SECRET_KEY=developmentSecretKey
+      - DEBUG=1
+    depends_on:
+      - db
