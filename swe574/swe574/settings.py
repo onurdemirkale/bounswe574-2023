@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'coLearn',
-    'chat'
+    'chat',
+    'learning_space'
 ]
 
 MIDDLEWARE = [

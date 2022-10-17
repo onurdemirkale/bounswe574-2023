@@ -19,18 +19,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from coLearn.views import (
-    learning_space_create_view,
-    learning_space_edit_view,
-    learning_space_view,
     explore_view,
     sign_up_view,
     sign_in_view,
     profile_view,
     profile_edit_view,
     logout_view,
-    question_view,
-    question_create_view,
-    my_learning_spaces_view,
     search_view
 )
 
@@ -42,15 +36,12 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('user/<int:user_id>/', profile_view, name='user-profile'),
     path('user/<int:user_id>/edit', profile_edit_view, name='user-profile-edit'),
-    path('learningspace/create/', learning_space_create_view, name='learning-space-create'),
-    path('learningspace/<int:learning_space_id>/', learning_space_view, name='learning-space'),
-    path('learningspace/<int:learning_space_id>/edit/', learning_space_edit_view, name='learning-space-edit'),
-    path('learningspace/<int:learning_space_id>/question/<int:question_id>', question_view, name='question'),
-    path('learningspace/<int:learning_space_id>/question/create', question_create_view, name='question-create'),
-    path('mylearningspaces/', my_learning_spaces_view, name='my-learning-spaces'),
+
     path('search/', search_view, name='search'),
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls')),
+    path('learningspace/', include('learning_space.urls'), name='learning-space')
+
 ]
 
 # If DEBUG is true, the url mapping for the media files

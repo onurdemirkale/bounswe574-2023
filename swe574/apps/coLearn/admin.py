@@ -1,11 +1,11 @@
 from django.contrib import admin
 
 from coLearn.models import CoLearnUser
-from coLearn.models import LearningSpace
+from learning_space.models import LearningSpace
 from coLearn.models import Quiz
 from coLearn.models import QuizQuestion
-from coLearn.models import Question
-from coLearn.models import Answer
+from learning_space.models import Question
+from learning_space.models import Answer
 from chat.models import Chat
 from chat.models import ChatMessage
 

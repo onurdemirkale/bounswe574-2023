@@ -23,7 +23,7 @@
 			<ul>
 				{% if related_spaces %} {% for r in related_spaces %}
 				<li>
-					<a href="{% url 'learning-space' r.id %}">{{r.title}}</a>
+					<a href="{% url "learning_space:learning_space_view" r.id %}">{{r.title}}</a>
 				</li>
 				{% endfor %}{% endif %}
 			</ul>

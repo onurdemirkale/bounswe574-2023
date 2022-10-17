@@ -1,114 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template import loader
-from .models import LearningSpace, CoLearnUser, Question, Answer
-from .forms import LearningSpaceCreateForm, LearningSpaceEditForm, SignInForm, SignUpForm, UserProfileForm, ProfilePictureForm, AnswerForm, QuestionForm
+from .models import CoLearnUser
+from learning_space.models import LearningSpace
+from .forms import  SignInForm, SignUpForm, UserProfileForm, ProfilePictureForm
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-# Learning Space views.
-
-def learning_space_view(request, learning_space_id):
-  learningSpace = LearningSpace.objects.get(pk=learning_space_id)
-
-  # Obtain quizzes and questions.
-  quizzes = learningSpace.quizzes.all()
-  questions = learningSpace.questions.all()
-
-  # Obtain the subscribers using the LearningSpace model.
-  subscribers = learningSpace.subscribers.all()
-
-  user_subscribed = False
-
-  for s in subscribers:
-    if s.user.id == request.user.id:
-      user_subscribed = True
-
-  user_authenticated = False
-  
-  user_id = None
-
-  # If there is a POST request, subsribe/unsubscribe the user.
-  if(request.POST):
-    coLearnUser = CoLearnUser.objects.get(pk=request.user.id)
-    if user_subscribed:
-      learningSpace.subscribers.remove(coLearnUser)
-      learningSpace.save()
-    else:
-      learningSpace.subscribers.add(coLearnUser)
-      learningSpace.save()
-
-    return redirect('/learningspace/%d' % learning_space_id )
-  
-  if request.user.is_authenticated:
-    user_authenticated = True
-    user_id = request.user.id
-
-  relatedSpaces = LearningSpace.objects.filter(keywords__overlap=learningSpace.keywords)
-
-  context = {
-    'title' : learningSpace.title,
-    'overview' : learningSpace.overview,
-    'prerequisites' : learningSpace.prerequisites,
-    'id': learningSpace.id,
-    'quizzes': quizzes,
-    'questions': questions,
-    'subscribers': subscribers,
-    'related_spaces': relatedSpaces,
-    'user_authenticated': user_authenticated,
-    'user_id': user_id,
-    'user_subscribed': user_subscribed
-  }
-
-  return render(request, 'learningSpace/learning_space.html', context)
-
-@login_required
-def learning_space_create_view(request):
-  if request.method == "POST":
-    form = LearningSpaceCreateForm(request.POST, request.FILES or None)
-    if form.is_valid():
-      space_created = LearningSpace.objects.create(**form.cleaned_data)
-      if(space_created):
-        return redirect('/learningspace/%d' % space_created.id )
-  else:
-    user_id = None
-  
-    if request.user.is_authenticated:
-      user_authenticated = True
-      user_id = request.user.id
-
-    context = {'user_authenticated': user_authenticated, 'user_id': user_id}
-    return render(request, 'learningSpace/learning_space_create.html', context)
-
-@login_required
-def learning_space_edit_view(request , learning_space_id):
-  learningSpace = LearningSpace.objects.get(pk=learning_space_id)
-  if request.method == "POST":
-    form = LearningSpaceEditForm(request.POST, request.FILES or None)
-    if form.is_valid():
-      result = LearningSpace.objects.filter(pk=learning_space_id).update(**form.cleaned_data)
-      if(result):
-        return redirect('/learningspace/%d' % learning_space_id )
-
-  user_authenticated = False
-  user_id = None
-  
-  if request.user.is_authenticated:
-    user_authenticated = True
-    user_id = request.user.id
-
-  context = {
-    'title' : learningSpace.title,
-    'overview' : learningSpace.overview,
-    'prerequisites' : learningSpace.prerequisites,
-    'keywords': learningSpace.keywords,
-    'id': learningSpace.id,
-    'user_authenticated': user_authenticated,
-    'user_id': user_id
-  }
-
-  return render(request, 'learningSpace/learning_space_edit.html', context)
 
 # Explore views.
 
@@ -153,27 +52,6 @@ def search_view(request):
   }
 
   return render(request, 'search/search.html', context)
-
-# MyLearningSpaces views.
-
-def my_learning_spaces_view(request):
-  coLearnUser = CoLearnUser.objects.get(id=request.user.id)
-  myLearningSpaces = LearningSpace.objects.filter(subscribers=coLearnUser)
-
-  user_authenticated = False
-  user_id = None
-  
-  if request.user.is_authenticated:
-    user_authenticated = True
-    user_id = request.user.id
-
-  context = {
-    'my_learning_spaces' : myLearningSpaces,
-    'user_authenticated': user_authenticated,
-    'user_id': user_id
-  }
-
-  return render(request, 'myLearningSpaces/myLearningSpaces.html', context)
 
 
 # Authentication views.
@@ -301,51 +179,3 @@ def quiz_create_view(request, learning_space_id):
     context = {}
 
     return render(request, 'quiz/quiz_create.html', context)
-
-# Questions views.
-
-@login_required
-def question_view(request, learning_space_id, question_id):
-  question = Question.objects.get(pk=question_id)
-  answers = question.answers.all()
-
-  answerForm = AnswerForm(request.POST or None)
-  if(answerForm.is_valid()):
-    coLearnUser = CoLearnUser.objects.get(pk=request.user.id)
-    answer = Answer.objects.create(sender=coLearnUser, content=answerForm.cleaned_data.get('content'))
-    question.answers.add(answer)
-
-    return redirect('/learningspace/%d/question/%d' % (learning_space_id,question_id))
-  
-  context = {
-    'learning_space_id': learning_space_id,
-    'question_id': question_id,
-    'question': question,
-    'answers': answers
-  }
-
-  return render(request, 'question/question.html', context)
-
-@login_required
-def question_create_view(request, learning_space_id):
-  questionForm = QuestionForm(request.POST or None)
-  if(questionForm.is_valid()):
-    coLearnUser = CoLearnUser.objects.get(pk=request.user.id)
-    question = Question.objects.create(author = coLearnUser, 
-                                     question_title=questionForm.cleaned_data.get('question_title'), 
-                                     question_content=questionForm.cleaned_data.get('question_content'))
-    learningSpace = LearningSpace.objects.get(pk=learning_space_id)
-    learningSpace.questions.add(question)
-    learningSpace.save()
-  
-    return redirect('/learningspace/%d/question/%d' % (learning_space_id,question.id))
-  user_authenticated = False
-  
-  user_id = None
-  
-  if request.user.is_authenticated:
-    user_authenticated = True
-    user_id = request.user.id
-
-  context = {'learning_space_id': learning_space_id, 'user_authenticated': user_authenticated, 'user_id': user_id}
-  return render(request, 'question/question_create.html', context)
