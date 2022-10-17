@@ -6,8 +6,8 @@ from coLearn.models import Quiz
 from coLearn.models import QuizQuestion
 from coLearn.models import Question
 from coLearn.models import Answer
-from coLearn.models import Chat
-from coLearn.models import ChatMessage
+from chat.models import Chat
+from chat.models import ChatMessage
 
 admin.site.register(CoLearnUser)
 admin.site.register(LearningSpace)

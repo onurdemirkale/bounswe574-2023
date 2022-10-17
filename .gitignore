@@ -45,3 +45,6 @@ venv.bak/
 
 #Database
 data
+
+##Pycharm##
+.idea

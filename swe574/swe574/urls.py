@@ -50,6 +50,7 @@ urlpatterns = [
     path('mylearningspaces/', my_learning_spaces_view, name='my-learning-spaces'),
     path('search/', search_view, name='search'),
     path('admin/', admin.site.urls),
+    path('chat/', include('chat.urls')),
 ]
 
 # If DEBUG is true, the url mapping for the media files

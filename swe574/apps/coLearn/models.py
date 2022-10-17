@@ -5,82 +5,72 @@ from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# Username, first name, last name, password and e-mail adress 
+
+# Username, first name, last name, password and e-mail adress
 # is already handled by the django auth model. 
 # The Profile Django model is used to store the extra information
 # that relates to the built-in Django User model.
 class CoLearnUser(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE) # Used to extend the Auth User.
-  interests = ArrayField(models.CharField(max_length=100), blank=True, null=True)
-  background = models.TextField(max_length=1000, blank=True)
-  profile_picture = models.FileField(blank=True) 
-  bio = models.TextField(max_length=1000, blank=True)
-  birth_date = models.DateField(null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Used to extend the Auth User.
+    interests = ArrayField(models.CharField(max_length=100), blank=True, null=True)
+    background = models.TextField(max_length=1000, blank=True)
+    profile_picture = models.FileField(blank=True)
+    bio = models.TextField(max_length=1000, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
 
-# Signal definition so that Profile model will be automatically 
+
+# Signal definition so that Profile model will be automatically
 # created/updated when User instances are created/updated.
 @receiver(post_save, sender=User)
 def create_colearn_user(sender, instance, created, **kwargs):
     if created:
         CoLearnUser.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
 def save_colearn_user(sender, instance, **kwargs):
     instance.colearnuser.save()
 
-# Note: ForeignKey is used to define many-to-one relationships. 
-
-# Chat Model that represents a conversation between two users.
-class Chat(models.Model):
-    initiator = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='chat_initiator')
-    receiver = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='chat_participant')
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-# ChatMessage Model that represents a message that is sent by any
-# party during a chat.
-class ChatMessage(models.Model):
-    sender = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT, related_name='message_sender')
-    receiver = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT, related_name='message_receiver')
-    text = models.CharField(max_length=200) # Limited to 200 characters for now.
-    file_attachment = models.FileField(blank=True) # For possible file/image attachments.
-    chat_id = models.ForeignKey(Chat, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
 
 # Answer sent to a Question.
 class Answer(models.Model):
-  sender = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='answer_sender')
-  content = models.CharField(max_length=500, blank=True)
+    sender = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='answer_sender')
+    content = models.CharField(max_length=500, blank=True)
+
 
 # Model used for Questions.
 class Question(models.Model):
-  question_title = models.CharField(max_length=100)
-  author = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT)
-  question_content = models.CharField(max_length=500)
-  answers = models.ManyToManyField(Answer, blank=True)
-  date_created = models.DateTimeField(auto_now_add=True)
+    question_title = models.CharField(max_length=100)
+    author = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT)
+    question_content = models.CharField(max_length=500)
+    answers = models.ManyToManyField(Answer, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
 
 # Quiz Question Model used by Quiz to store a Question and Answers created by a user.
 class QuizQuestion(models.Model):
-  question = models.CharField(max_length=500)
-  answers = ArrayField(models.CharField(max_length=200))
-  correct_answer = models.CharField(max_length=500)
+    question = models.CharField(max_length=500)
+    answers = ArrayField(models.CharField(max_length=200))
+    correct_answer = models.CharField(max_length=500)
+
 
 # Model used for Quizzes.
 class Quiz(models.Model):
-  title = models.CharField(max_length=100)
-  author = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT)
-  description = models.CharField(max_length=500)
-  questions = models.ManyToManyField(QuizQuestion)
-  date_created = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT)
+    description = models.CharField(max_length=500)
+    questions = models.ManyToManyField(QuizQuestion)
+    date_created = models.DateTimeField(auto_now_add=True)
+
 
 # Model used for Learning Spaces.
 class LearningSpace(models.Model):
-  overview = models.CharField(max_length=1000)
-  thumbnail = models.FileField(blank=True)
-  prerequisites = ArrayField(models.CharField(max_length=100), blank=True, null=True, default=list)
-  title = models.CharField(max_length=100)
-  keywords = ArrayField(models.CharField(max_length=100), blank=True, null=True, default=list)
-  subscribers = models.ManyToManyField(CoLearnUser, blank=True)
-  questions = models.ManyToManyField(Question, blank=True) 
-  quizzes = models.ManyToManyField(Quiz, blank=True)
-  date_created = models.DateTimeField(auto_now_add=True)
+    overview = models.CharField(max_length=1000)
+    thumbnail = models.FileField(blank=True)
+    prerequisites = ArrayField(models.CharField(max_length=100), blank=True, null=True, default=list)
+    title = models.CharField(max_length=100)
+    keywords = ArrayField(models.CharField(max_length=100), blank=True, null=True, default=list)
+    subscribers = models.ManyToManyField(CoLearnUser, blank=True)
+    questions = models.ManyToManyField(Question, blank=True)
+    quizzes = models.ManyToManyField(Quiz, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)

@@ -54,13 +54,14 @@ ALLOWED_HOSTS.extend(
 # Application definition
 
 INSTALLED_APPS = [ 
-    'coLearn',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'coLearn',
+    'chat'
 ]
 
 MIDDLEWARE = [
