@@ -1,0 +1,3 @@
+[submodule "annotation-server"]
+	path = annotation-server
+	url = https://github.com/HammadSiddiqui/annotation-server.git
