@@ -40,7 +40,9 @@ urlpatterns = [
     path('search/', search_view, name='search'),
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls')),
-    path('learningspace/', include('learning_space.urls'), name='learning-space')
+    path('learningspace/', include('learning_space.urls'), name='learning-space'),
+
+    path('api/', include('api.urls'))
 
 ]
 
