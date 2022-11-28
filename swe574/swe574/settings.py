@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coLearn',
     'chat',
-    'learning_space'
+    'learning_space',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

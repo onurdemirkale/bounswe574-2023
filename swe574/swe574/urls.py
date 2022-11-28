@@ -41,6 +41,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls')),
     path('learningspace/', include('learning_space.urls'), name='learning-space'),
+    
+    path('api/', include('api.urls')),
     path('annotations/', include('annotation.urls'), name='annotation')
 
 ]
