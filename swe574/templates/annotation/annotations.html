@@ -24,6 +24,19 @@
     {% if user_authenticated %} {%include 'navbar_auth.html'%} {% else %} {%include
     'navbar_unauth.html'%} {% endif %}
     <!-- Navbar End -->
+    				<!-- Main -->
+            <div class="album py-5 bg-light">
+              <div class="container">
+                {% if user_authenticated %}
+                <div class="py-3 text-center">
+                  <a class="btn btn-sm btn-outline-secondary" href="/annotations/create">Create an Annotation</a>
+                </div>
+                {% endif %}
+                <div class="row">
+                </div>
+              </div>
+            </div>
+          </main>
 
     <!-- Footer -->
     {%include 'footer.html'%}
