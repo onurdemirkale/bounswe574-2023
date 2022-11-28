@@ -21,8 +21,11 @@
   </head>
   <body>
     <!-- Navbar -->
-    {% if user_authenticated %} {%include 'navbar_auth.html'%} {% else %} {%include
-    'navbar_unauth.html'%} {% endif %}
+    {% if user_authenticated %}
+    {%include 'navbar_auth.html'%}
+    {% else %}
+    {%include 'navbar_unauth.html'%}
+    {% endif %}
     <!-- Navbar End -->
     				<!-- Main -->
             <div class="album py-5 bg-light">
