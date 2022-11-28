@@ -46,6 +46,22 @@ def learning_space_view(request, learning_space_id):
 
     relatedSpaces = LearningSpace.objects.filter(keywords__overlap=learningSpace.keywords)
 
+    activity_quizzes = []
+
+    for activity_quiz in quizzes.order_by('-date_created')[:5]:
+        quiz_author = activity_quiz.author.user
+        quiz_date = activity_quiz.date_created.date()
+        temp_tuple = (quiz_author, quiz_date)
+        activity_quizzes.append(temp_tuple)
+
+    activity_questions = []
+
+    for activity_question in questions.order_by('-date_created')[:5]:
+        question_author = activity_question.author.user
+        question_date = activity_question.date_created.date()
+        temp_tuple = (question_author, question_date)
+        activity_questions.append(temp_tuple)
+
     context = {
         'title': learningSpace.title,
         'overview': learningSpace.overview,
@@ -57,7 +73,9 @@ def learning_space_view(request, learning_space_id):
         'related_spaces': relatedSpaces,
         'user_authenticated': user_authenticated,
         'user_id': user_id,
-        'user_subscribed': user_subscribed
+        'user_subscribed': user_subscribed,
+        'activity_quizzes': activity_quizzes,
+        'activity_questions': activity_questions
     }
 
     return render(request, 'learningSpace/learning_space.html', context)
@@ -182,4 +200,3 @@ def my_learning_spaces_view(request):
     }
 
     return render(request, 'myLearningSpaces/myLearningSpaces.html', context)
-
