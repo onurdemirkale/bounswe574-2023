@@ -4,7 +4,8 @@ from django.db import models
 # Create your models here.
 
 # Model used for Learning Spaces.
-from coLearn.models import CoLearnUser, Quiz
+from coLearn.models import CoLearnUser
+from quiz.models import Quiz
 
 
 # Answer sent to a Question.
