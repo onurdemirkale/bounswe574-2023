@@ -36,6 +36,25 @@
 	// when the annotation button is toggled.
 	document.onclick = function (event) {
 		let path = getPathTo(event.target);
+
+		let element = getElementByXpath(path)
+
+		// Examples
+		if (isImage(element)){
+			console.log('The element is an image!')
+		}
+
+		if (hasText(element)){
+			console.log('The element has text!')
+		}
+
+		if (isHeader(element)){
+			console.log('The element is a header!')
+		}
+
+		if (isParagraph(element)){
+			console.log('The element is a parapgraph!')
+		}
 	}
 
 	function isImage(element){
@@ -69,7 +88,7 @@
 	function getText(){
 		return element.innerText
 	}
-	
+
 	function getElementByXpath(path) {
 		return document.evaluate(`//${path}`, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 	}
