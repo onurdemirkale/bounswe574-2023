@@ -30,3 +30,80 @@
 		</ul>
 	</div>
 </nav>
+
+<script>
+	// TODO: Update the onClick event listener to be only toggled 
+	// when the annotation button is toggled.
+	document.onclick = function (event) {
+		let path = getPathTo(event.target);
+
+		let element = getElementByXpath(path)
+
+		// Examples
+		if (isImage(element)){
+			console.log('The element is an image!')
+		}
+
+		if (hasText(element)){
+			console.log('The element has text!')
+		}
+
+		if (isHeader(element)){
+			console.log('The element is a header!')
+		}
+
+		if (isParagraph(element)){
+			console.log('The element is a parapgraph!')
+		}
+	}
+
+	function isImage(element){
+		if (element.tagName == 'IMG'){
+			return true;
+		}
+		return false;
+	}
+
+	function isHeader(element){
+		if (element.tagName == 'H1' || element.tagName == 'H2' || element.tagName == 'H3' || element.tagName == 'H4' || element.tagName == 'H5' || element.tagName == 'H6'){
+			return true;
+		}
+		return false;
+	}
+
+	function isParagraph(element){
+		if (element.tagName == 'P'){
+			return true;
+		}
+		return false;
+	}
+
+	function hasText(element){
+		if(element.innerText){
+			return true;
+		}
+		return false;
+	}
+
+	function getText(){
+		return element.innerText
+	}
+
+	function getElementByXpath(path) {
+		return document.evaluate(`//${path}`, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	}
+	
+	function getPathTo(element) {
+		if (element.id !== "") return 'id("' + element.id + '")';
+		if (element === document.body) return element.tagName;
+	
+		let ix = 0;
+		let siblings = element.parentNode.childNodes;
+		for (let i = 0; i < siblings.length; i++) {
+			let sibling = siblings[i];
+			if (sibling === element)
+				return getPathTo(element.parentNode) + "/" + element.tagName + "[" + (ix + 1) + "]";
+			if (sibling.nodeType === 1 && sibling.tagName === element.tagName) ix++;
+		}
+	}
+</script>
