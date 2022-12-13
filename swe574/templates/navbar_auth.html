@@ -38,6 +38,38 @@
 		let path = getPathTo(event.target);
 	}
 
+	function isImage(element){
+		if (element.tagName == 'IMG'){
+			return true;
+		}
+		return false;
+	}
+
+	function isHeader(element){
+		if (element.tagName == 'H1' || element.tagName == 'H2' || element.tagName == 'H3' || element.tagName == 'H4' || element.tagName == 'H5' || element.tagName == 'H6'){
+			return true;
+		}
+		return false;
+	}
+
+	function isParagraph(element){
+		if (element.tagName == 'P'){
+			return true;
+		}
+		return false;
+	}
+
+	function hasText(element){
+		if(element.innerText){
+			return true;
+		}
+		return false;
+	}
+
+	function getText(){
+		return element.innerText
+	}
+	
 	function getElementByXpath(path) {
 		return document.evaluate(`//${path}`, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 	}
