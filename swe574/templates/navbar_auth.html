@@ -37,6 +37,10 @@
 	document.onclick = function (event) {
 		let path = getPathTo(event.target);
 	}
+
+	function getElementByXpath(path) {
+		return document.evaluate(`//${path}`, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	}
 	
 	function getPathTo(element) {
 		if (element.id !== "") return 'id("' + element.id + '")';
