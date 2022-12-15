@@ -7,7 +7,7 @@
                 <ul>
                     {% if subscribers %} {% for s in subscribers %}
                         <li>
-                            <a href="{% url 'user-profile' s.user.id %}">{{s.user.username}}</a>
+                            <a href="{% url 'user-profile' s.user.id %}">{{ s.user.username }}</a>
                         </li>
                     {% endfor %}{% endif %}
                 </ul>
@@ -23,7 +23,7 @@
             <ul>
                 {% if related_spaces %} {% for r in related_spaces %}
                     <li>
-                        <a href="{% url "learning_space:learning_space_view" r.id %}">{{r.title}}</a>
+                        <a href="{% url "learning_space:learning_space_view" r.id %}">{{ r.title }}</a>
                     </li>
                 {% endfor %}{% endif %}
             </ul>
@@ -38,18 +38,33 @@
             <ul>
                 {% if activity_questions %} {% for question in activity_questions %}
                     <li>
-                        <a href="{% url "user-profile" question.0.id %}">{{ question.0.username }} </a>  posted a question at {{ question.1 }}
+                        <a href="{% url "user-profile" question.0.id %}">{{ question.0.username }} </a> posted a
+                        question at {{ question.1 }}
                     </li>
                 {% endfor %}{% endif %}
 
                 {% if activity_quizzes %} {% for quiz in activity_quizzes %}
                     <li>
-                        <a href="{% url "user-profile" quiz.0.id %}">{{ quiz.0.username }} </a>  created a quiz at {{ quiz.1 }}
+                        <a href="{% url "user-profile" quiz.0.id %}">{{ quiz.0.username }} </a> created a quiz
+                        at {{ quiz.1 }}
                     </li>
                 {% endfor %}{% endif %}
             </ul>
             <!-- Learner Activity List End-->
         </ol>
+    </div>
+
+    <div class="p-3 mb-3 bg-light rounded">
+        <h4>Annotations</h4>
+        <!-- Default switch -->
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitches">
+            <label id="annotation-switch-label" class="custom-control-label" for="customSwitches">Turn on to annotate</label>
+            <label id="annotation-selected-text-label" style="visibility: hidden" for="annotation-selected-text">Selected text is: </label>
+            <input id="annotation-selected-text" style="visibility: hidden" readonly>
+            <button id="annotate-button" style="visibility: hidden" type="submit">Annotate</button>
+
+        </div>
     </div>
 
 </aside>
