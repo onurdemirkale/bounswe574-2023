@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
-
+from tags.views import get_wikidata, create_tag_view, create_tag_form
 from coLearn.views import (
     explore_view,
     sign_up_view,
@@ -43,7 +43,11 @@ urlpatterns = [
     path('learningspace/', include('learning_space.urls'), name='learning-space'),
     
     path('api/', include('api.urls')),
-    path('annotations/', include('annotation.urls'), name='annotation')
+    path('annotations/', include('annotation.urls'), name='annotation'),
+
+    path('get_wikidata/<str:search_query>', get_wikidata, name='get_wikidata'),
+    path('create_tag/', create_tag_view, name='create_tag_view'),
+    path('create_tag_form/', create_tag_form, name='create_tag_form'),
 
 ]
 

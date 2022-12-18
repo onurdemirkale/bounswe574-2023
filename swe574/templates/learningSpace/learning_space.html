@@ -206,10 +206,12 @@
         return text;
     }
 
+
     function doSomethingWithSelectedText() {
         var selectedText = getSelectedText();
+
         if (selectedText) {
-            {#alert("Got selected text " + selectedText);#}
+
             annotation.value = selectedText;
 
         }

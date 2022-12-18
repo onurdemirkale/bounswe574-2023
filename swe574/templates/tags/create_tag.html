@@ -1,10 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+            name="description"
+            content="swe 573 projet, co-learn web application"
+    />
+    <meta name="author" content="onur demirkale"/>
+
+    <title>Co-Learn</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+    />
 </head>
-<body>
-$END$
+<body class="bg-light">
+<!-- Navbar -->
+{% include 'navbar_auth.html' %}
+<!-- Navbar End -->
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Create A Tag</h2>
+    </div>
+    <div class="flex-row justify-content-center d-flex">
+        <form id="create-tag-form" method="POST" action="." class="needs-validation" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Name</label>
+                <input
+                        id = "tag-name"
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        placeholder="Tag Name"
+                        required
+                />
+                <div class="invalid-feedback">Please provide a name for your tag.</div>
+            </div>
+
+            <div id="search-container" class="form-inline">
+                <input id="search-wiki-input" class="form-control mr-sm-2" type="search" placeholder="Wiki Data Search"
+                       aria-label="Search">
+                {#                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+            </div>
+            <label>Wiki Data Tags</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="wiki-description-option">Options</label>
+                </div>
+                <select required id="wiki-description-option" class="custom-select">
+                    <option selected> ----Choose one of the searched wiki tags----</option>
+
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea
+                        id="wiki-description-text"
+                        class="form-control"
+                        name="overview"
+                        rows="3"
+                        required
+                        readonly
+                ></textarea>
+                <div class="invalid-feedback">Please provide an overview.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Wiki URL</label>
+                <input
+                        id="wiki-url"
+                        type="text"
+                        name="wiki url"
+                        class="form-control"
+                        required
+                        readonly
+
+                />
+            </div>
+
+            <div class="form-group">
+                <label>Wiki Label</label>
+                <input
+                        id="wiki-label"
+                        type="text"
+                        name="wiki label"
+                        class="form-control"
+                        readonly
+                        required
+
+                />
+            </div>
+
+            <div class="form-group row d-flex justify-content-center">
+                <div class="text-center form-group">
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </div>
+                <div>&nbsp;&nbsp;&nbsp;</div>
+                <div>
+                    <a class="btn btn-secondary" href="/explore"
+                    >Cancel</a
+                    >
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Footer -->
+{% include 'footer.html' %}
+<!-- Footer end-->
 </body>
+
+<script
+        src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    let wiki_options = $("#wiki-description-option");
+    let wiki_description = $("#wiki-description-text")
+    let wiki_url = $("#wiki-url");
+    let wiki_label = $("#wiki-label");
+
+    $(document).on("change", "select", function () {
+        $(`option[value=` + `"`+this.value+`"` +`]`, this)
+            .attr("selected", true).siblings()
+            .removeAttr("selected")
+
+
+        console.log(this.value);
+
+        let json_object = this.value.replace(/'/g, '"')
+        let json = JSON.parse(json_object)
+        wiki_description.val((json['description']));
+        wiki_url.val((json['url']));
+        wiki_label.val((json['label']));
+
+    });
+    let searchSubmit = $('#search-container').on('input', function (e) {
+        e.preventDefault();
+        setTimeout((function () {
+            const csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            $.ajax({
+                type: "POST",
+                url: "/get_wikidata/" + $("#search-wiki-input").val().trim(),
+                enctype: 'multipart/form-data',
+                data: {
+                    'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                },
+
+
+                success: function (response) {
+
+
+                    wiki_options.empty();
+                    wiki_description.empty();
+                    wiki_url.empty();
+                    wiki_label.empty();
+
+                    for (let i = 0; i < response.length; i++) {
+
+
+                        let description = response[i]['description'];
+                        let url = response[i]['url'];
+                        let label = response[i]['label'];
+
+                       wiki_options.append($('<option>', {value: `{'label':` + `'` + label+ `'` +`,'description':`+ `'` +description +`'` +`,'url':`+ `'` + url +`'}`, text:description}));
+
+                        {#wiki_description.val(description);#}
+                        {#wiki_url.val(url);#}
+                        {#wiki_label.val(label);#}
+
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+
+
+                }
+            });
+
+        }), 800);
+
+
+    });
+    $('#create-tag-form').on('submit', function (e) {
+        e.preventDefault();
+        setTimeout((function () {
+            const csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            $.ajax({
+                type: "POST",
+                url: "/create_tag_form/" ,
+                enctype: 'multipart/form-data',
+                data: {
+                    'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                    'name': $('#tag-name').val(),
+                    "wikidata_item_url": wiki_url.val(),
+                    "wikidata_item_label": wiki_label.val(),
+                    "wikidata_item_description": wiki_description.val(),
+                },
+
+
+                success: function (response) {
+
+                    console.log(response)
+                    window.location.href = '/learningspace/create/'
+
+                },
+                error: function (error) {
+                    console.log(error);
+
+
+                }
+            });
+
+        }), 800)
+    });
+
+
+</script>
+
 </html>
+
+
