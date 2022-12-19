@@ -27,18 +27,21 @@
 		{% if user_authenticated %} {%include 'navbar_auth.html'%} {% else %}
 		{%include 'navbar_unauth.html'%} {% endif %}
 		<!-- Navbar End -->
-
-		<div class="mt-5">
-			<a class="btn btn-success btn-sm" aria-current="page" href="/learningspace/{{learning_space_id}}/quizes/{{quiz.id}}/create_question">Add a question</a>
-		  </div>
 		
-		
-		  <html>
-			<div class="mt-5">
-			  <form action="" method="post" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{ form_question.as_p }}
-				<button class="btn btn-success btn-sm" href="/learningspace/{{learning_space_id}}/quizes/{{quiz.id}}">Create a question</button>
-			  </form>
+		<div class="flex-row justify-content-center d-flex">
+			<div class="col-md-6">
+				<div class="card card-body">
+				   <form action="" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						{{form_question.as_p}}
+						<button type="submit" class="btn btn-primary" name="Submit">Submit</button>
+					</form>
+				</div>
+				<div>
+					<a class="btn btn-secondary" href="/learningspace/{{learning_space_id}}/quiz/{{quiz.id}}/edit"
+						>Cancel</a
+					>
+				</div>
 			</div>
-		  </html>
+		</div>
+</html>

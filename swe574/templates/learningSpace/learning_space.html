@@ -158,17 +158,17 @@
 							</div>
 							<div class="card-body">
 								<ul class="list-group mb-3">
-									{% if quizzes %} {% for q in quizzes %}
+									{% if quizzes %} {% for quiz in quizzes %}
 									<li
 										class="list-group-item d-flex justify-content-between lh-condensed"
 									>
 										<div>
-											<h6 class="my-0"><a href="#">{{q.topic_title}}</a></h6>
+											<h6 class="my-0"><a href="#">{{quiz.title}}</a></h6>
 											<small class="text-muted"
-												>Posted by: {{q.author.user.username}}</small
+												>Posted by: {{quiz.author}}</small
 											>
 										</div>
-										<span class="text-muted">Created: {{q.date_created}}</span>
+										<span class="text-muted">Created: {{quiz.published_date}}</span>
 									</li>
 									{% endfor %}{% endif %}
 								</ul>

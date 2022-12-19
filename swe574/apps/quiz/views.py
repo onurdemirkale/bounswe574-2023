@@ -15,8 +15,8 @@ def create_quiz(request,learning_space_id):
             quiz = form_quiz.save(commit=False)
             quiz.author = CoLearnUser.objects.get(pk=request.user.id)
             quiz.save()
-            learningSpace.save()
-            return render(request, 'quiz/quiz.html', {'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz": quiz})
+            learningSpace.quizzes.add()
+            return render(request, 'quiz/quiz_edit.html', {'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz": quiz})
     else:
         form_quiz = quiz_form()
     return render(request, 'quiz/quiz_create.html', { 'learning_space_id': learning_space_id,"learningSpace": learningSpace , "form_quiz": form_quiz})
@@ -32,10 +32,11 @@ def create_quiz_question(request,learning_space_id,quiz_id):
             question=form_question.save(commit=False)
             question.quiz = quiz
             question.save()
-            learningSpace.save()
+            quiz.save()
+            learningSpace.quizzes.add()
             questions = QuizQuestion.objects.filter(quiz = quiz)
-            return render(request, 'quiz/quiz.html', {'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz" : quiz , "questions":questions})
-    return render(request,'quiz/create_quiz_question.html',{'learning_space_id': learning_space_id,"learningSpace":learningSpace,"form_question" : form_question})
+            return render(request, 'quiz/quiz_edit.html', {'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz" : quiz , "questions":questions})
+    return render(request,'quiz/create_quiz_question.html',{'learning_space_id': learning_space_id,"learningSpace":learningSpace,"form_question" : form_question,"quiz" : quiz})
 
 @login_required
 def quiz_detail(request,learning_space_id,quiz_id):
