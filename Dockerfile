@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt
 # Adds a user called swe574 without password and without 
 # creating a home directory.
 RUN adduser --disabled-password --no-create-home swe574
-
+RUN python -m pip install -U channels["daphne"]
 # Creates new directories for static and media files. 
 # Then chown changes of the ownership of the files in a recursive manner
 # as the application group. Finally permissions are set to ensure that

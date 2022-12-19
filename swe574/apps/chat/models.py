@@ -9,10 +9,13 @@ from coLearn.models import CoLearnUser
 
 
 class Chat(models.Model):
-    initiator = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='chat_initiator')
-    receiver = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='chat_participant')
+    first_user = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='chat_initiator')
+    second_user = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='chat_participant')
+    # katilimci = models.ManyToManyField(CoLearnUser, blank=True)
+    # first_user_info = models.CharField(max_length=128, unique=True,blank=True)
+    # second_user_info = models.CharField(max_length=128, unique=True,blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
+    
 
 # ChatMessage Model that represents a message that is sent by any
 # party during a chat.
