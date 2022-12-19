@@ -30,6 +30,7 @@ urlpatterns = [
     path('<int:learning_space_id>/question/create', question_create_view, name='question-create'),
     path('mylearningspaces/', my_learning_spaces_view, name='my_learning_spaces_view'),
     path('<int:learning_space_id>/quiz/create', create_quiz, name='quiz-create'),
-    path('<int:learning_space_id>/quizes/<int:quiz_id>', quiz_detail, name='quiz-create-question'),
-    path('<int:learning_space_id>/quizes/<int:quiz_id>/create_question', create_quiz_question , name= 'create_quiz_question'),
+    path('<int:learning_space_id>/quiz/<int:quiz_id>/edit', quiz_detail, name='quiz-create'),
+    path('<int:learning_space_id>/quiz/<int:quiz_id>', quiz_detail, name='quiz-create-question'),
+    path('<int:learning_space_id>/quiz/<int:quiz_id>/create_question', create_quiz_question , name= 'create_quiz_question'),
 ]
