@@ -55,12 +55,33 @@
     </div>
 
     <div class="p-3 mb-3 bg-light rounded">
+        <h4>Add Tags</h4>
+        <ol class="list-unstyled mb-0">
+            <!-- Tags List -->
+            <ul>
+                {% if tags %} {% for tag in tags %}
+                    <li>
+                        {{ tag.name | title }}
+                    </li>
+                {% endfor %}{% endif %}
+
+
+            </ul>
+
+            <!-- Tags List End-->
+        </ol>
+        <a href="/learningspace/{{ id }}/add_tags/" class="btn btn-md ml-auto btn-success">Add Tag</a>
+    </div>
+
+    <div class="p-3 mb-3 bg-light rounded">
         <h4>Annotations</h4>
         <!-- Default switch -->
         <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="customSwitches">
-            <label id="annotation-switch-label" class="custom-control-label" for="customSwitches">Turn on to annotate</label>
-            <label id="annotation-selected-text-label" style="visibility: hidden" for="annotation-selected-text">Selected text is: </label>
+            <label id="annotation-switch-label" class="custom-control-label" for="customSwitches">Turn on to
+                annotate</label>
+            <label id="annotation-selected-text-label" style="visibility: hidden" for="annotation-selected-text">Selected
+                text is: </label>
             <input id="annotation-selected-text" style="visibility: hidden" readonly>
             <button id="annotate-button" style="visibility: hidden" type="submit">Annotate</button>
 

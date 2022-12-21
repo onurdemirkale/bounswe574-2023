@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from learning_space.form import LearningSpaceCreateForm, LearningSpaceEditForm, AnswerForm, QuestionForm
 from coLearn.models import CoLearnUser
 from learning_space.models import LearningSpace, Question, Answer
+from tags.models import Tag
 
 
 def learning_space_view(request, learning_space_id):
@@ -75,7 +76,8 @@ def learning_space_view(request, learning_space_id):
         'user_id': user_id,
         'user_subscribed': user_subscribed,
         'activity_quizzes': activity_quizzes,
-        'activity_questions': activity_questions
+        'activity_questions': activity_questions,
+        'tags': Tag.objects.filter(learning_space_of_the_tags=learningSpace)
     }
 
     return render(request, 'learningSpace/learning_space.html', context)
@@ -200,3 +202,8 @@ def my_learning_spaces_view(request):
     }
 
     return render(request, 'myLearningSpaces/myLearningSpaces.html', context)
+
+
+@login_required
+def add_tags_view(request, learning_space_id):
+    return render(request, 'tags/add_tags.html', {"learning_space_id": learning_space_id})

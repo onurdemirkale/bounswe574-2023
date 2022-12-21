@@ -126,6 +126,34 @@
         src="https://code.jquery.com/jquery-3.6.1.js"
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
         crossorigin="anonymous"></script>
+<!-- JavaScript for disabling form submissions if there are invalid fields -->
+<script>
+	(function () {
+		'use strict';
+		window.addEventListener(
+			'load',
+			function () {
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.getElementsByClassName('needs-validation');
+				// Loop over them and prevent submission
+				var validation = Array.prototype.filter.call(forms, function (form) {
+					form.addEventListener(
+						'submit',
+						function (event) {
+							if (form.checkValidity() === false) {
+								event.preventDefault();
+								event.stopPropagation();
+							}
+							form.classList.add('was-validated');
+						},
+						false
+					);
+				});
+			},
+			false
+		);
+	})();
+</script>
 
 <script type="text/javascript">
 
@@ -169,6 +197,7 @@
                     wiki_description.empty();
                     wiki_url.empty();
                     wiki_label.empty();
+                    wiki_options.append($('<option selected> ----Choose one of the searched wiki tags----</option>'))
 
                     for (let i = 0; i < response.length; i++) {
 
@@ -176,8 +205,14 @@
                         let description = response[i]['description'];
                         let url = response[i]['url'];
                         let label = response[i]['label'];
+                        if(i === 0) {
 
-                       wiki_options.append($('<option>', {value: `{'label':` + `'` + label+ `'` +`,'description':`+ `'` +description +`'` +`,'url':`+ `'` + url +`'}`, text:description}));
+                            wiki_options.append($('<option>', {value: `{'label':` + `'` + label+ `'` +`,'description':`+ `'` +description +`'` +`,'url':`+ `'` + url +`'}`, text:description}));
+                            {#wiki_options.attr("selected", true).siblings()#}
+                        }else{
+                            wiki_options.append($('<option>', {value: `{'label':` + `'` + label+ `'` +`,'description':`+ `'` +description +`'` +`,'url':`+ `'` + url +`'}`, text:description}));
+
+                        }
 
                         {#wiki_description.val(description);#}
                         {#wiki_url.val(url);#}
@@ -218,7 +253,12 @@
                 success: function (response) {
 
                     console.log(response)
-                    window.location.href = '/learningspace/create/'
+                    if (response['message'] === "success") {
+                        history.back()
+                } else  {
+                        alert("something went wrong")
+
+                    }
 
                 },
                 error: function (error) {
