@@ -3,6 +3,8 @@ name: test_Django
 on:
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    branches: [main]
 env:
   DEBUG: "1"
   SECRET_KEY: ${{ env.SECRET_KEY }}
