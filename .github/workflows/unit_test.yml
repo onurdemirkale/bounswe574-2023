@@ -7,12 +7,12 @@ on:
     branches: [main]
 env:
   DEBUG: "1"
-  SECRET_KEY: ${{ env.SECRET_KEY }}
-  DB_NAME: ${{ env.DB_NAME }}
-  DB_USER: ${{ env.DB_USER }}
-  DB_PASSWORD: ${{ env.DB_PASSWORD }}
-  DB_HOST: ${{ env.DB_HOST }}
-  ALLOWED_HOSTS: ${{ env.AlLOWED_HOSTS }} 
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  ALLOWED_HOSTS: ${{ secrets.AlLOWED_HOSTS }} 
 jobs:
   test_project:
     runs-on: ubuntu-latest
