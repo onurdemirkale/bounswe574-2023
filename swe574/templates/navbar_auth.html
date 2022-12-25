@@ -83,7 +83,11 @@ crossorigin="anonymous"
 <script>
 	// TODO: Update the onClick event listener to be only toggled 
 	// when the annotation button is toggled.
+
+	let annotationEnabled = false;
 	let targetValue;
+	let targetType;
+
 	// Obtains the highlighted text value
 	function getSelectedValue() {
 			var text = "";
