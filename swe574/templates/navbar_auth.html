@@ -107,6 +107,25 @@ crossorigin="anonymous"
 					targetValue.value = selectedValue;
 			}
 	}
+
+	// Toggles the annotation functionality if the annotation checkbox is checked
+	function toggleAnnotation() {
+		let checkBox = document.getElementById("annotation-switch");
+	
+		// If the annotation checkbox is checked, enabled annotation
+		if (checkBox.checked == true){
+			targetValue = document.getElementById("target-value");
+			targetType = document.getElementById("target-type");
+			document.onmouseup = setSelectedValue;
+			document.onkeyup = setSelectedValue;
+			annotationEnabled = true;
+		} else {
+			document.onmouseup = null;
+			document.onkeyup = null;
+			annotationEnabled = false;
+		}
+	}
+
 	// Enables the popover form when the document is first displayed
 	$(document).ready(function() {
     $('#annotation-switch-label').popover({
