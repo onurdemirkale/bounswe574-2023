@@ -103,6 +103,12 @@ crossorigin="anonymous"
 					targetValue.value = selectedValue;
 			}
 	}
+	// Enables the popover form when the document is first displayed
+	$(document).ready(function() {
+    $('#annotation-switch-label').popover({
+    container: 'body'
+  	});
+	});
 	document.onclick = function (event) {
 		let path = getPathTo(event.target);
 
