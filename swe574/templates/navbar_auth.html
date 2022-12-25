@@ -83,6 +83,16 @@ crossorigin="anonymous"
 <script>
 	// TODO: Update the onClick event listener to be only toggled 
 	// when the annotation button is toggled.
+	// Obtains the highlighted text value
+	function getSelectedValue() {
+			var text = "";
+			if (typeof window.getSelection != "undefined") {
+					text = window.getSelection().toString();
+			} else if (typeof document.selection != "undefined" && document.selection.type === "Text") {
+					text = document.selection.createRange().text;
+			}
+			return text;
+	}
 	document.onclick = function (event) {
 		let path = getPathTo(event.target);
 
