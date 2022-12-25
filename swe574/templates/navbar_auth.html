@@ -83,6 +83,7 @@ crossorigin="anonymous"
 <script>
 	// TODO: Update the onClick event listener to be only toggled 
 	// when the annotation button is toggled.
+	let targetValue;
 	// Obtains the highlighted text value
 	function getSelectedValue() {
 			var text = "";
@@ -92,6 +93,15 @@ crossorigin="anonymous"
 					text = document.selection.createRange().text;
 			}
 			return text;
+	}
+
+	// Sets the highlighted text value on the annotation form popover
+	function setSelectedValue() {
+			let selectedValue = getSelectedValue();
+			if (selectedValue) {
+					{#alert("Got selected text " + selectedValue);#}
+					targetValue.value = selectedValue;
+			}
 	}
 	document.onclick = function (event) {
 		let path = getPathTo(event.target);
