@@ -141,21 +141,13 @@ crossorigin="anonymous"
 
 		let element = getElementByXpath(path)
 
-		// Examples
 		if (isImage(element)){
-			console.log('The element is an image!')
+			targetType.value ='Image'
+			targetValue.value = null
 		}
 
 		if (hasText(element)){
-			console.log('The element has text!')
-		}
-
-		if (isHeader(element)){
-			console.log('The element is a header!')
-		}
-
-		if (isParagraph(element)){
-			console.log('The element is a parapgraph!')
+			targetType.value ='Text'
 		}
 	}
 
