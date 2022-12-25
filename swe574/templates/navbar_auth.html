@@ -133,6 +133,10 @@ crossorigin="anonymous"
   	});
 	});
 	document.onclick = function (event) {
+		if(!annotationEnabled){
+			return
+		}
+		
 		let path = getPathTo(event.target);
 
 		let element = getElementByXpath(path)
