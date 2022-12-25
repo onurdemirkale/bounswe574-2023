@@ -132,6 +132,9 @@ crossorigin="anonymous"
     container: 'body'
   	});
 	});
+
+	// If annotation is enabled, sets the type and value of the clicked
+	// element on the annotation popover form
 	document.onclick = function (event) {
 		if(!annotationEnabled){
 			return
