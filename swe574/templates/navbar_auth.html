@@ -87,6 +87,7 @@ crossorigin="anonymous"
 	let annotationEnabled = false;
 	let targetValue;
 	let targetType;
+	let targetXpath;
 
 	// Obtains the highlighted text value
 	function getSelectedValue() {
@@ -116,6 +117,7 @@ crossorigin="anonymous"
 		if (checkBox.checked == true){
 			targetValue = document.getElementById("target_value");
 			targetType = document.getElementById("target_type");
+			targetXpath = document.getElementById("target_xpath")
 			document.onmouseup = setSelectedValue;
 			document.onkeyup = setSelectedValue;
 			annotationEnabled = true;
@@ -141,6 +143,8 @@ crossorigin="anonymous"
 		}
 		
 		let path = getPathTo(event.target);
+
+		targetXpath.value = path;
 
 		let element = getElementByXpath(path)
 
