@@ -9,23 +9,40 @@ from learning_space.models import LearningSpace, CoLearnUser
 @login_required
 def create_quiz(request,learning_space_id):
     learningSpace = LearningSpace.objects.get(id =learning_space_id)
+    user_authenticated = False
+
+    user_id = None
+
+    if request.user.is_authenticated:
+        user_authenticated = True
+        user_id = request.user.id
+    
     if request.method == "POST":
         form_quiz = quiz_form(request.POST)
         if form_quiz.is_valid():
             quiz = form_quiz.save(commit=False)
             quiz.author = CoLearnUser.objects.get(pk=request.user.id)
             quiz.save()
-            learningSpace.quizzes.add()
-            return render(request, 'quiz/quiz_edit.html', {'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz": quiz})
+            learningSpace.quizzes.add(quiz)
+            learningSpace.save()
+            return render(request, 'quiz/quiz_edit.html', {'user_authenticated':user_authenticated,'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz": quiz})
     else:
         form_quiz = quiz_form()
-    return render(request, 'quiz/quiz_create.html', { 'learning_space_id': learning_space_id,"learningSpace": learningSpace , "form_quiz": form_quiz})
+        return render(request, 'quiz/quiz_create.html', { 'user_authenticated':user_authenticated,'learning_space_id': learning_space_id,"learningSpace": learningSpace , "form_quiz": form_quiz})
 
 @login_required
 def create_quiz_question(request,learning_space_id,quiz_id):    
     learningSpace = LearningSpace.objects.get(pk=learning_space_id)
     quiz = Quiz.objects.get(id = quiz_id)
     form_question = question_form()
+
+    user_authenticated = False
+    user_id = None
+
+    if request.user.is_authenticated:
+        user_authenticated = True
+        user_id = request.user.id
+
     if request.method=='POST':
         form_question = question_form(request.POST)
         if form_question.is_valid():
@@ -35,13 +52,22 @@ def create_quiz_question(request,learning_space_id,quiz_id):
             quiz.save()
             learningSpace.quizzes.add()
             questions = QuizQuestion.objects.filter(quiz = quiz)
-            return render(request, 'quiz/quiz_edit.html', {'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz" : quiz , "questions":questions})
-    return render(request,'quiz/create_quiz_question.html',{'learning_space_id': learning_space_id,"learningSpace":learningSpace,"form_question" : form_question,"quiz" : quiz})
+            return render(request, 'quiz/quiz_edit.html', {'user_authenticated':user_authenticated,'learning_space_id': learning_space_id,"learningSpace" : learningSpace , "quiz" : quiz , "questions":questions})
+    return render(request,'quiz/create_quiz_question.html',{'user_authenticated':user_authenticated,'learning_space_id': learning_space_id,"learningSpace":learningSpace,"form_question" : form_question,"quiz" : quiz})
 
 @login_required
 def quiz_detail(request,learning_space_id,quiz_id):
     learningSpace = LearningSpace.objects.get(pk=learning_space_id)
     quiz = Quiz.objects.get(id = quiz_id)
+
+    user_authenticated = False
+    user_id = None
+
+    if request.user.is_authenticated:
+        user_authenticated = True
+        user_id = request.user.id
+
+    
     if request.method == 'POST':
         print(request.POST)
         questions= QuizQuestion.objects.filter(quiz = quiz)
@@ -53,13 +79,16 @@ def quiz_detail(request,learning_space_id,quiz_id):
             print(q.true_answer)
             print()
             if q.true_answer ==  request.POST.get(q.question):
-                correct_answers+=1
-            
-        total_score = round((correct_answers/question_number) *100)
+                correct_answers+=1  
+        
+        try:
+            total_score = round((correct_answers/question_number) *100)
+        except ZeroDivisionError:
+            total_score = 0
 
-        return render(request,'quiz/quiz_result.html',{'learning_space_id': learning_space_id,"learningSpace":learningSpace, "quiz":quiz, "total_score" : total_score, 'correct_answers':correct_answers})
+        return render(request,'quiz/quiz_result.html',{'user_authenticated':user_authenticated,'learning_space_id': learning_space_id,"learningSpace":learningSpace, "quiz":quiz, "total_score" : total_score, 'correct_answers':correct_answers})
     else:
         questions= QuizQuestion.objects.filter(quiz = quiz)
         
-        return render(request,'quiz/quiz.html',{'learning_space_id': learning_space_id, "learningSpace":learningSpace, "quiz":quiz, "questions":questions})
+        return render(request,'quiz/quiz.html',{'user_authenticated':user_authenticated,'learning_space_id': learning_space_id, "learningSpace":learningSpace, "quiz":quiz, "questions":questions})
     return
