@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseBadRequest
+import requests
 
 
 def my_annotations_view(request):
@@ -20,18 +22,22 @@ def my_annotations_view(request):
 
 def create_annotation_view(request):
 
-    user_authenticated = False
-    user_id = None
+    if not request.user.is_authenticated:
+        return HttpResponseBadRequest
 
-    if request.user.is_authenticated:
-        user_authenticated = True
-        user_id = request.user.id
+    user_authenticated = True
+    user_id = request.user.id
 
-    context = {
-        'user_authenticated': user_authenticated,
-        'user_id': user_id
+    # TODO: Obtain annotation server URL from configuration.
+    annotation_server_url = "http://google.com"
     }
 
-    print('creating an annotation...')
+    # TODO: Replace the request method with a POST request and include
+    # annotation content in the data.
+    response = requests.get(annotation_server_url, data={})
 
-    return render(request, 'annotation/annotations.html', context)
+    if response.status_code > 399:
+        return HttpResponseBadRequest("Annotation server returned an bad response.")
+
+    # Redirect the user to the original URL
+    return redirect(request.META.get('HTTP_REFERER'))
