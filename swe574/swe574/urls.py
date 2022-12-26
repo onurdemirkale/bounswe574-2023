@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
-from tags.views import get_wikidata, create_tag_view, create_tag_form, get_tags_from_db, add_tag_to_space
+from tags.views import get_wikidata, create_tag_view, create_tag_form, get_tags_from_db, add_tag_to_space,remove_tag_from_space
 from coLearn.views import (
     explore_view,
     sign_up_view,
@@ -49,7 +49,8 @@ urlpatterns = [
     path('create_tag/', create_tag_view, name='create_tag_view'),
     path('create_tag_form/', create_tag_form, name='create_tag_form'),
     path('get_tags_from_db/<str:search_query>', get_tags_from_db, name='get_tags_from_db'),
-    path('add_tag_to_space/', add_tag_to_space, name='add_tag_to_space')
+    path('add_tag_to_space/', add_tag_to_space, name='add_tag_to_space'),
+    path('remove_tag_from_space/', remove_tag_from_space, name='remove_tag_from_space'),
 
 ]
 

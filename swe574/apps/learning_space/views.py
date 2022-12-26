@@ -207,3 +207,12 @@ def my_learning_spaces_view(request):
 @login_required
 def add_tags_view(request, learning_space_id):
     return render(request, 'tags/add_tags.html', {"learning_space_id": learning_space_id})
+
+
+@login_required
+def remove_tags_view(request, learning_space_id):
+    context = {
+        "learning_space_id": learning_space_id,
+        "tags": Tag.objects.filter(learning_space_of_the_tags=learning_space_id)
+    }
+    return render(request, 'tags/remove_tags.html', context)

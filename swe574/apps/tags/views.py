@@ -116,3 +116,24 @@ def add_tag_to_space(request):
             "error": "Posting Error"
         })
 
+
+def remove_tag_from_space(request):
+    if request.method == "POST":
+        tag_id = request.POST.get("id")
+        learning_space_id = request.POST.get("learning_space_id")
+        data = {
+            "tags": [tag_id,],
+        }
+        learning_space = LearningSpace.objects.get(pk=learning_space_id)
+        form = AddTagToSpace(instance=learning_space, data=data)
+        if form.is_valid():
+            learning_space.tags.remove(Tag.objects.get(id=tag_id))
+            return JsonResponse({'message': 'success'})
+        else:
+            print(form.errors)
+            return JsonResponse({'message': 'Form Failed'})
+    else:
+        return JsonResponse({
+            'message': 'fail',
+            "error": "Posting Error"
+        })
