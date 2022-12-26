@@ -37,18 +37,18 @@ crossorigin="anonymous"
           data-content='<form method="POST" action="/annotations/create/" enctype="multipart/form-data" novalidate>
 						{% csrf_token %}
 						<h6>Body</h6>
-						<input name="body-value" id="body-value" type="text"/>
+						<input name="body_value" id="body_value" type="text"/>
 						<br><br/>
 						<h6>Target</h6>            
-						<label id="target-type-label" for="target-type">Type:</label>
+						<label id="target_type_label" for="target_type">Type:</label>
 						<br/>
-            <input name="target-type" id="target-type" readonly>
-						<label id="target-value-label" for="target-value">Target Value: </label>
+            <input name="target_type" id="target_type" readonly>
+						<label id="target_value_label" for="target_value">Target Value: </label>
 						<br/>
-            <input name="target-value" id="target-value" readonly>
+            <input name="target_value" id="target_value" readonly>
 						<br></br>
 						<button id="annotate-button" class="btn btn-primary btn-sm" type="submit">Annotate</button>
-						<input name="target-xpath"  id="target-xpath" style="visibility: hidden" readonly>
+						<input name="target_xpath"  id="target_xpath" style="visibility: hidden" readonly>
 					</form>'
           data-html="true"
           data-placement="bottom"
@@ -114,8 +114,8 @@ crossorigin="anonymous"
 	
 		// If the annotation checkbox is checked, enabled annotation
 		if (checkBox.checked == true){
-			targetValue = document.getElementById("target-value");
-			targetType = document.getElementById("target-type");
+			targetValue = document.getElementById("target_value");
+			targetType = document.getElementById("target_type");
 			document.onmouseup = setSelectedValue;
 			document.onkeyup = setSelectedValue;
 			annotationEnabled = true;
