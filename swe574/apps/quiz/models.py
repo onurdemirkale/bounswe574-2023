@@ -5,10 +5,10 @@ from django.utils import timezone
 
 # Create your models here.
 class Quiz(models.Model):
-    author = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT)
     title = models.CharField(max_length=140)
     description = models.CharField(max_length=500)    
-    published_date = models.DateField(default=timezone.now)
+    published_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
