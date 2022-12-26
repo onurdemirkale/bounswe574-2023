@@ -31,10 +31,7 @@
 		<div class="flex-row justify-content-center d-flex">
 			<div class="col-md-6">
 				<div class="card card-body">
-			<a class="btn btn-primary" aria-current="page" href="/learningspace/{{learning_space_id}}/quiz/{{quiz.id}}/create_question">Add a question</a>
-		
-		
-		
+					
 		  <form method='post' action=''>
 			{% csrf_token %}
 			{% for q  in questions %}
@@ -78,7 +75,12 @@
 			<br>
 		
 		  </form>
-					<div class="mt-5">
+					<div class="col text-center">
+						<a class="btn btn-primary" aria-current="page" href="/learningspace/{{learning_space_id}}/quiz/{{quiz.id}}/create_question">Add a question</a>
+					</div>
+					<br>
+					<br>
+					<div class="col text-center">
 						<a class="btn btn-primary" aria-current="page" href="/learningspace/{{learning_space_id}}">Save Quiz</a>
 					</div>
 				</div>

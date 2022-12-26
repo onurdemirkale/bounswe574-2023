@@ -27,54 +27,68 @@
 		{% if user_authenticated %} {%include 'navbar_auth.html'%} {% else %}
 		{%include 'navbar_unauth.html'%} {% endif %}
 		<!-- Navbar End -->
-
-		<div class="mt-5">
-			<a class="btn btn-success btn-sm" aria-current="page" href="/learningspace/{{learning_space_id}}/quiz/{{quiz.id}}/create_question">Add a question</a>
-		  </div>
-		
 		
 		  <form method='post' action=''>
-			{% csrf_token %}
-			{% for q  in questions %}
-		
-				<div class="form-group">
-				<label for="question">{{q.question}}</label>
-				</div>
-		
-				<div class="form-check">
-					<div class="form-check">
-						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option1" checked>
-						<label class="form-check-label" for="gridRadios1">
-							{{q.option1}}
-						</label>
-					</div>
-		
-					<div class="form-check">
-						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="option2">
-						<label class="form-check-label" for="gridRadios2">
-							{{q.option2}}
-						</label>
-					</div>
-		
-					<div class="form-check">
-						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option3">
-						<label class="form-check-label" for="gridRadios1">
-							{{q.option3}}
-						</label>
-					</div>
-		
-					<div class="form-check">
-						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="option4">
-						<label class="form-check-label" for="gridRadios2">
-							{{q.option4}}
-						</label>
-					</div>
-					<br>
-				</div>    
-			{% endfor %}
-		
+			<div class="justify-content-center d-flex">
+				<div class="card" style="width: 72rem;">
+					{% csrf_token %}
+					{% if questions %} {% for q  in questions %}
+					<div class="card-body">
+						<div class="form-group"style="width: 72rem;">
+						<label for="question">{{q.question}}</label>
+						</div>
+						
+						<div class="form-check">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option1" checked>
+								<label class="form-check-label" for="gridRadios1">
+									{{q.option1}}
+								</label>
+							</div>
+				
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="option2">
+								<label class="form-check-label" for="gridRadios2">
+									{{q.option2}}
+								</label>
+							</div>
+				
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option3">
+								<label class="form-check-label" for="gridRadios1">
+									{{q.option3}}
+								</label>
+							</div>
+				
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="option4">
+								<label class="form-check-label" for="gridRadios2">
+									{{q.option4}}
+								</label>
+							</div>
+							<br>
+						</div>
+					</div> 
+					{% endfor %}
+				</div>     
+			</div>
 			<br>
-		
-			<button type="submit" class="btn btn-success btn-sm">Check results</button>
-		
-		  </form>
+			<div class="col text-center">
+				<button type="submit" class="btn btn-success" >Check results</button>
+			</div>
+		</form>
+		{% else %}
+		<br />
+		<div class="container">
+			<div class="text-center">
+				<span class="text-muted">
+				<p>
+					There is no question in this quiz.
+				</p></span
+				>
+			</div>
+		</div>
+		<div class="col text-center">
+			<a class="btn btn-secondary" aria-current="page" href="/learningspace/{{learning_space_id}}">Cancel</a>
+		</div>
+		{% endif %}
