@@ -140,7 +140,7 @@ crossorigin="anonymous"
 	// If annotation is enabled, sets the type and value of the clicked
 	// element on the annotation popover form
 	document.onclick = function (event) {
-		if(!annotationEnabled){
+		if(!annotationEnabled || event.target.id === "annotate-button" || event.target.id == "body_value" || event.target.id == '"popover191731")/DIV[2]/FORM[1]/H6[2]'){
 			return
 		}
 		
