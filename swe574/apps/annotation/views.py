@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.http import HttpResponse, HttpResponseBadRequest
 from annotation.forms import AnnotationForm
+from datetime import datetime
 import json
 import requests
 
@@ -93,6 +95,19 @@ def create_annotation_view(request):
             }
         }
 
+    # Define the annotation
+    annotation = {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        # The annotation ID (URI) is implemeneted by the annotation server
+        "id": None,
+        "type": "Annotation",
+        "creator": "http://{}/user/{}".format(host, user_id),
+        "created": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "modified": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "generated": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "body": annotation_body,
+        "target": target
+    }
     if response.status_code > 399:
         return HttpResponseBadRequest("Annotation server returned an bad response.")
 
