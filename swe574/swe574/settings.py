@@ -71,7 +71,8 @@ INSTALLED_APPS = [
     'chat',
     'learning_space',
     'rest_framework',
-    'storages'
+    'storages',
+    'tags'
 ]
 
 MIDDLEWARE = [

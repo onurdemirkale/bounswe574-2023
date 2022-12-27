@@ -8,6 +8,9 @@ from coLearn.models import CoLearnUser, Quiz
 
 
 # Answer sent to a Question.
+from tags.models import Tag
+
+
 class Answer(models.Model):
     sender = models.ForeignKey(CoLearnUser, on_delete=models.CASCADE, related_name='answer_sender')
     content = models.CharField(max_length=500, blank=True)
@@ -32,6 +35,8 @@ class LearningSpace(models.Model):
     questions = models.ManyToManyField(Question, blank=True)
     quizzes = models.ManyToManyField(Quiz, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    tags = models.ManyToManyField(Tag, related_name="learning_space_of_the_tags", blank=True)
+
 
 
 
