@@ -39,7 +39,8 @@ DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 # header attacks. The ALLOWED_HOSTS represent the host/domain names
 # that the Django site can serve. The host names need to be specified 
 # for production.
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+
 
 # Environment variables come as a string. To retrieve ALLOWED_HOSTS
 # environment variable, comma-separated list of different hostnames  
