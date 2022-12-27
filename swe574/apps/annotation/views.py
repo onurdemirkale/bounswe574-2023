@@ -74,6 +74,25 @@ def create_annotation_view(request):
             }
         }
 
+    # Define the target using XPathSelector and a refinedBy attribute if the
+    # target type is text
+    if target_type == 'Text':
+
+        target = {
+            "source": target_uri,
+            "language": "en",
+            "type": "Text",
+            "selector": {
+                "type": "XPathSelector",
+                "value": target_xpath,
+                "refinedBy": {
+                    "type": "TextPositionSelector",
+                    "start": text_position_start,
+                    "end": text_position_end
+                }
+            }
+        }
+
     if response.status_code > 399:
         return HttpResponseBadRequest("Annotation server returned an bad response.")
 
