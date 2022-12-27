@@ -167,28 +167,38 @@ USE_TZ = True
 # The reverse proxy will serve static files from these locations if
 # the URLs start with /static. 
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+if DEBUG == False:
+    STATIC_URL = '/static/static/'
+    MEDIA_URL = '/static/media/'
+    STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
 
-MEDIA_ROOT = BASE_DIR / "uploads"
-MEDIA_URL = '/files/' 
+    MEDIA_ROOT = '/vol/web/media'
+    STATIC_ROOT = '/vol/web/static'
+    
+if DEBUG == True:
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATIC_URL = '/static/'
 
-AWS_STORAGE_BUCKET_NAME = "swe574-group-1-static"
-AWS_S3_REGION_NAME = "eu-central-1"
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    STATICFILES_DIRS = [
+        BASE_DIR / "static"
+    ]
 
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    MEDIA_ROOT = BASE_DIR / "uploads"
+    MEDIA_URL = '/files/'
 
-STATICFILES_FOLDER = "static"
-MEDIAFILES_FOLDER = "media"
+    AWS_STORAGE_BUCKET_NAME = "swe574-group-1-static"
+    AWS_S3_REGION_NAME = "eu-central-1"
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
-STATICFILES_STORAGE = 'swe574.custom_storages.StaticFileStorage'
-DEFAULT_FILE_STORAGE = 'swe574.custom_storages.MediaFileStorage'
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+    STATICFILES_FOLDER = "static"
+    MEDIAFILES_FOLDER = "media"
+
+    STATICFILES_STORAGE = 'swe574.custom_storages.StaticFileStorage'
+    DEFAULT_FILE_STORAGE = 'swe574.custom_storages.MediaFileStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
