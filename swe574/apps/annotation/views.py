@@ -44,9 +44,14 @@ def create_annotation_view(request):
     if not annotationForm.is_valid():
         return HttpResponseBadRequest("Invalid annotation form.")
 
-    # TODO: Replace the request method with a POST request and include
-    # annotation content in the data.
-    response = requests.get(annotation_server_url, data={})
+    # Obtain the annotation attributes from the form
+    body_value = annotationForm.cleaned_data.get('body_value')
+    target_type = annotationForm.cleaned_data.get('target_type')
+    target_value = annotationForm.cleaned_data.get('target_value')
+    target_xpath = annotationForm.cleaned_data.get('target_xpath')
+    text_position_end = annotationForm.cleaned_data.get('text_position_end')
+    text_position_start = annotationForm.cleaned_data.get(
+        'text_position_start')
 
     if response.status_code > 399:
         return HttpResponseBadRequest("Annotation server returned an bad response.")
