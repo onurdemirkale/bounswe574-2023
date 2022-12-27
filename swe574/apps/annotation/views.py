@@ -108,6 +108,10 @@ def create_annotation_view(request):
         "body": annotation_body,
         "target": target
     }
+
+    # Perform a POST request to the annotation server with the generated annotation
+    response = requests.post(annotation_server_uri, data=annotation)
+
     if response.status_code > 399:
         return HttpResponseBadRequest("Annotation server returned an bad response.")
 
