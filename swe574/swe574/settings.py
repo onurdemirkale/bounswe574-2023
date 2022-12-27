@@ -167,12 +167,18 @@ USE_TZ = True
 # The reverse proxy will serve static files from these locations if
 # the URLs start with /static. 
 
-STATIC_URL = '/static/static/'
-MEDIA_URL = '/static/media/'
-STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/vol/web/media'
-STATIC_ROOT = '/vol/web/static'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
+MEDIA_ROOT = BASE_DIR / "uploads"
+MEDIA_URL = '/files/' 
+
+STATICFILES_FOLDER = "static"
+MEDIAFILES_FOLDER = "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
