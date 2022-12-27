@@ -53,6 +53,14 @@ def create_annotation_view(request):
     text_position_start = annotationForm.cleaned_data.get(
         'text_position_start')
 
+    # Define the annotation body
+    annotation_body = {
+        "type": "TextualBody",
+        "value": body_value,
+        "format": "text/html",
+        "language": "en"
+    }
+
     if response.status_code > 399:
         return HttpResponseBadRequest("Annotation server returned an bad response.")
 
