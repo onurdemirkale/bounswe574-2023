@@ -28,8 +28,8 @@ def create_annotation_view(request):
     user_authenticated = True
     user_id = request.user.id
 
-    # TODO: Obtain annotation server URL from configuration.
-    annotation_server_url = "http://google.com"
+    # Obtain annotation server URI from environment variables
+    annotation_server_uri = os.environ['ANNOTATION_SERVER_URI']
     }
 
     # TODO: Replace the request method with a POST request and include
