@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
+from annotation.forms import AnnotationForm
 import requests
 
 
@@ -37,6 +38,11 @@ def create_annotation_view(request):
     # Obtain the URI of the page that the annotation was generated in
     target_uri = request.META.get('HTTP_REFERER')
 
+    annotationForm = AnnotationForm(request.POST or None)
+
+    # Return a bad request response if the annotation form is not valid
+    if not annotationForm.is_valid():
+        return HttpResponseBadRequest("Invalid annotation form.")
 
     # TODO: Replace the request method with a POST request and include
     # annotation content in the data.
