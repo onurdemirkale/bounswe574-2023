@@ -41,6 +41,10 @@ DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 # for production.
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
+if DEBUG == False:
+    METADATA_URI = os.environ['ECS_CONTAINER_METADATA_URI']
+    container_metadata = requests.get(METADATA_URI).json()
+    ALLOWED_HOSTS.append(container_metadata['Networks'][0]['IPv4Addresses'][0])
 
 # Environment variables come as a string. To retrieve ALLOWED_HOSTS
 # environment variable, comma-separated list of different hostnames  
