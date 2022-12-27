@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+            name="description"
+            content="swe 573 projet, co-learn web application"
+    />
+
+    <title>Remove Tags</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+    />
+</head>
+<body class="bg-light">
+<!-- Navbar -->
+{% include 'navbar_auth.html' %}
+<!-- Navbar End -->
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Remove Tags</h2>
+    </div>
+    <div class="flex-row justify-content-center d-flex">
+        <form id="remove-tag-form" method="POST" action="." class="needs-validation" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <label>Space Tags</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="tags-option">Options</label>
+                </div>
+                <select required id="tags-option" class="form-select">
+                    <option selected> ----Choose one of the searched wiki tags----</option>
+
+                    {% for tag in tags %}
+                        <option id="{{ tag.id }}">{{ tag.name }}</option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group row d-flex justify-content-center">
+                <div class="text-center form-group">
+                    <button class="btn btn-primary" type="submit">Remove</button>
+                </div>
+                <div>&nbsp;&nbsp;&nbsp;</div>
+                <div>
+                    <a class="btn btn-secondary" href="/explore"
+                    >Cancel</a
+                    >
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Footer -->
+{% include 'footer.html' %}
+<!-- Footer end-->
+</body>
+
+<script
+        src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    let tags_option = $("#tags-option");
+
+        $(document).on("change", "select", function () {
+        $(`option[value=` + this.value + `]`, this)
+            .attr("selected", true).siblings()
+            .removeAttr("selected")
+            console.log(tags_option.children(":selected").attr('id'))
+
+            console.log(tags_option.val())
+
+    });
+
+
+    $('#remove-tag-form').on('submit', function (e) {
+        e.preventDefault();
+        setTimeout((function () {
+            const csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            $.ajax({
+                type: "POST",
+                url: "/remove_tag_from_space/" ,
+                enctype: 'multipart/form-data',
+                data: {
+                    'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                    'id': parseInt(tags_option.children(":selected").attr('id')),
+                    'learning_space_id': {{ learning_space_id }}
+
+                },
+
+
+                success: function (response) {
+
+                    console.log(response)
+                    history.back()
+                    {#window.location.href = '/learningspace/create/'#}
+
+                },
+                error: function (error) {
+                    console.log(error);
+
+
+                }
+            });
+
+        }), 800)
+    });
+
+
+</script>
+
+
+
+</html>
+
+
