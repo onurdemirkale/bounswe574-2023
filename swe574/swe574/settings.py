@@ -187,6 +187,9 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 STATICFILES_FOLDER = "static"
 MEDIAFILES_FOLDER = "media"
 
+STATICFILES_STORAGE = 'swe574.custom_storages.StaticFileStorage'
+DEFAULT_FILE_STORAGE = 'swe574.custom_storages.MediaFileStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
