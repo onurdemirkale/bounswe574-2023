@@ -90,6 +90,8 @@ crossorigin="anonymous"
 	let targetValue;
 	let targetType;
 	let targetXpath;
+	let textPositionStart;
+	let textPositionEnd;
 
 	// Obtains the highlighted text value
 	function getSelectedValue() {
@@ -120,6 +122,8 @@ crossorigin="anonymous"
 			targetValue = document.getElementById("target_value");
 			targetType = document.getElementById("target_type");
 			targetXpath = document.getElementById("target_xpath")
+			textPositionStart = document.getElementById("text_position_start");
+			textPositionEnd = document.getElementById("text_position_end");
 			document.onmouseup = setSelectedValue;
 			document.onkeyup = setSelectedValue;
 			annotationEnabled = true;
@@ -157,6 +161,8 @@ crossorigin="anonymous"
 
 		if (hasText(element)){
 			targetType.value ='Text'
+			textPositionStart.value = element.innerText.indexOf(targetValue.value);
+			textPositionEnd.value = element.innerText.indexOf(targetValue.value) + targetValue.value.length;
 		}
 	}
 
