@@ -70,7 +70,8 @@ INSTALLED_APPS = [
     'coLearn',
     'chat',
     'learning_space',
-    'rest_framework'
+    'rest_framework',
+    'storages'
 ]
 
 MIDDLEWARE = [
