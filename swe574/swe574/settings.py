@@ -168,7 +168,7 @@ USE_TZ = True
 # the URLs start with /static. 
 
 
-if DEBUG == False:
+if DEBUG == True:
     STATIC_URL = '/static/static/'
     MEDIA_URL = '/static/media/'
     STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
@@ -176,7 +176,7 @@ if DEBUG == False:
     MEDIA_ROOT = '/vol/web/media'
     STATIC_ROOT = '/vol/web/static'
     
-if DEBUG == True:
+if DEBUG == False:
     STATIC_ROOT = BASE_DIR / "staticfiles"
     STATIC_URL = '/static/'
 
