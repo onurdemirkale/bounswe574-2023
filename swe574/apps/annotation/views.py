@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from annotation.forms import AnnotationForm
+import json
 import requests
 
 
@@ -60,6 +61,18 @@ def create_annotation_view(request):
         "format": "text/html",
         "language": "en"
     }
+
+    # Define the target only using XPathSelector if the target type is Image
+    if target_type == 'Image':
+
+        target = {
+            "source": target_uri,
+            "type": "Image",
+            "selector": {
+                "type": "XPathSelector",
+                "value": target_xpath,
+            }
+        }
 
     if response.status_code > 399:
         return HttpResponseBadRequest("Annotation server returned an bad response.")
