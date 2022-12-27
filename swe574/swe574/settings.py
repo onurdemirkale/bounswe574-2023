@@ -163,11 +163,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-# The location of the static files will be mapped to the proxy image. 
-# The reverse proxy will serve static files from these locations if
-# the URLs start with /static. 
-
-
+# If Debug is set to true, the static files and media are served locally.
 if DEBUG == True:
     STATIC_URL = '/static/static/'
     MEDIA_URL = '/static/media/'
@@ -176,6 +172,7 @@ if DEBUG == True:
     MEDIA_ROOT = '/vol/web/media'
     STATIC_ROOT = '/vol/web/static'
     
+# If debug is set to false, the static files are served from the S3 Bucket.
 if DEBUG == False:
     STATIC_ROOT = BASE_DIR / "staticfiles"
     STATIC_URL = '/static/'
