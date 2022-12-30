@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta
+			name="description"
+			content="swe 574 projet, co-learn web application"
+		/>
+		<meta name="author" content="onur demirkale" />
+
+		<title>Co-Learn</title>
+
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
+	</head>
+	<body class="bg-light">
+		<!-- Navbar -->
+		{% if user_authenticated %} {%include 'navbar_auth.html'%} {% else %}
+		{%include 'navbar_unauth.html'%} {% endif %}
+		<!-- Navbar End -->
+
+		<div class="flex-row justify-content-center d-flex">
+			<div class="col-md-6">
+				<div class="card card-body">
+					
+		  <form method='post' action=''>
+			{% csrf_token %}
+			{% for q  in questions %}
+		
+				<div class="form-group">
+				<label for="question">{{q.question}}</label>
+				</div>
+		
+				<div class="form-check">
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option1" checked>
+						<label class="form-check-label" for="gridRadios1">
+							{{q.option1}}
+						</label>
+					</div>
+		
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="option2">
+						<label class="form-check-label" for="gridRadios2">
+							{{q.option2}}
+						</label>
+					</div>
+		
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option3">
+						<label class="form-check-label" for="gridRadios1">
+							{{q.option3}}
+						</label>
+					</div>
+		
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="option4">
+						<label class="form-check-label" for="gridRadios2">
+							{{q.option4}}
+						</label>
+					</div>
+					<br>
+				</div>    
+			{% endfor %}
+		
+			<br>
+		
+		  </form>
+					<div class="col text-center">
+						<a class="btn btn-primary" aria-current="page" href="/learningspace/{{learning_space_id}}/quiz/{{quiz.id}}/create_question">Add a question</a>
+					</div>
+					<br>
+					<br>
+					<div class="col text-center">
+						<a class="btn btn-primary" aria-current="page" href="/learningspace/{{learning_space_id}}">Save Quiz</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		

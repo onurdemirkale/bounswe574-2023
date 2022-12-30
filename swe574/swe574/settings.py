@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coLearn',
     'chat',
+    'quiz',
     'learning_space',
     'rest_framework',
     'tags'

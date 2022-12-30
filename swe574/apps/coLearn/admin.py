@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from coLearn.models import CoLearnUser
 from learning_space.models import LearningSpace
-from coLearn.models import Quiz
-from coLearn.models import QuizQuestion
+from quiz.models import Quiz
+from quiz.models import QuizQuestion
 from learning_space.models import Question
 from learning_space.models import Answer
 from chat.models import Chat
