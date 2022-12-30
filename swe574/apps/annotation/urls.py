@@ -20,7 +20,6 @@ from .views import *
 app_name = 'annotation'
 
 urlpatterns = [
-    path('', annotations_view, name='annotations_view'),
-
-
+    path('', my_annotations_view, name='my_annotations_view'),
+    path('create/', create_annotation_view, name='create_annotation_view')
 ]

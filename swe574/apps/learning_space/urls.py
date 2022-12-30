@@ -33,4 +33,6 @@ urlpatterns = [
     path('<int:learning_space_id>/quiz/<int:quiz_id>/edit', quiz_detail, name='quiz-create'),
     path('<int:learning_space_id>/quiz/<int:quiz_id>', quiz_detail, name='quiz-create-question'),
     path('<int:learning_space_id>/quiz/<int:quiz_id>/create_question', create_quiz_question , name= 'create_quiz_question'),
+    path('<int:learning_space_id>/add_tags/', add_tags_view, name='add_tags_view'),
+    path('<int:learning_space_id>/remove_tags/', remove_tags_view, name='remove_tags_view')
 ]

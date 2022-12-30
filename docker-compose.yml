@@ -4,7 +4,7 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - my_dbdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=swe574
       - POSTGRES_USER=admin
@@ -31,3 +31,6 @@ services:
       - DEBUG=1
     depends_on:
       - db
+
+volumes:
+  my_dbdata:

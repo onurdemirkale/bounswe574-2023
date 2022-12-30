@@ -1,3 +1,19 @@
+<script
+src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"
+></script>
+<script
+src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+crossorigin="anonymous"
+></script>
+<script
+src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+crossorigin="anonymous"
+></script>
+
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 	<a class="navbar-brand" href="/explore">Co-Learn</a>
 
@@ -9,11 +25,46 @@
 			<li class="nav-item active">
 				<a class="nav-link" href="/annotations">My Annotations</a>
 			</li>
+			<li class="nav-item active form-inline custom-switch my-2 my-md-0">
+				<input type="checkbox" class="custom-control-input" onClick=toggleAnnotation() id="annotation-switch">
+        <label
+          id="annotation-switch-label"
+          class="custom-control-label"
+          for="annotation-switch"
+          style="color: white"
+          data-toggle="popover"
+          title="Annotate Textual Body"
+          data-content='<form method="POST" action="/annotations/create/" enctype="multipart/form-data" novalidate>
+						{% csrf_token %}
+						<h6>Body</h6>
+						<input name="body_value" id="body_value" type="text"/>
+						<br><br/>
+						<h6>Target</h6>            
+						<label id="target_type_label" for="target_type">Type:</label>
+						<br/>
+            <input name="target_type" id="target_type" readonly>
+						<label id="target_value_label" for="target_value">Target Value: </label>
+						<br/>
+            <input name="target_value" id="target_value" readonly>
+						<br></br>
+						<button id="annotate-button" class="btn btn-primary btn-sm" type="submit">Annotate</button>
+						<input name="target_xpath"  id="target_xpath" style="visibility: hidden" readonly>
+						<input name="text_position_start"  id="text_position_start" style="visibility: hidden" readonly>
+						<input name="text_position_end"  id="text_position_end" style="visibility: hidden" readonly>
+					</form>'
+          data-html="true"
+          data-placement="bottom"
+          >Annotate</label
+        >
+      </li>
 			<li class="nav-item active">
 				<a class="nav-link" href="/explore">Explore</a>
 			</li>
 			<li class="nav-item active">
 				<a class="nav-link" href="/user/{{user_id}}">Profile</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="/chat/">Chat</a>
 			</li>
 			<form method="GET" action="/search/" class="form-inline my-2 my-md-0">
 				{% csrf_token %}
@@ -30,3 +81,139 @@
 		</ul>
 	</div>
 </nav>
+
+<script>
+	// TODO: Update the onClick event listener to be only toggled 
+	// when the annotation button is toggled.
+
+	let annotationEnabled = false;
+	let targetValue;
+	let targetType;
+	let targetXpath;
+	let textPositionStart;
+	let textPositionEnd;
+
+	// Obtains the highlighted text value
+	function getSelectedValue() {
+			var text = "";
+			if (typeof window.getSelection != "undefined") {
+					text = window.getSelection().toString();
+			} else if (typeof document.selection != "undefined" && document.selection.type === "Text") {
+					text = document.selection.createRange().text;
+			}
+			return text;
+	}
+
+	// Sets the highlighted text value on the annotation form popover
+	function setSelectedValue() {
+			let selectedValue = getSelectedValue();
+			if (selectedValue) {
+					targetValue.value = selectedValue;
+			}
+	}
+
+	// Toggles the annotation functionality if the annotation checkbox is checked
+	function toggleAnnotation() {
+		let checkBox = document.getElementById("annotation-switch");
+	
+		// If the annotation checkbox is checked, enabled annotation
+		if (checkBox.checked == true){
+			targetValue = document.getElementById("target_value");
+			targetType = document.getElementById("target_type");
+			targetXpath = document.getElementById("target_xpath")
+			textPositionStart = document.getElementById("text_position_start");
+			textPositionEnd = document.getElementById("text_position_end");
+			document.onmouseup = setSelectedValue;
+			document.onkeyup = setSelectedValue;
+			annotationEnabled = true;
+		} else {
+			document.onmouseup = null;
+			document.onkeyup = null;
+			annotationEnabled = false;
+		}
+	}
+
+	// Enables the popover form when the document is first displayed
+	$(document).ready(function() {
+    $('#annotation-switch-label').popover({
+    container: 'body'
+  	});
+	});
+
+	// If annotation is enabled, sets the type and value of the clicked
+	// element on the annotation popover form
+	document.onclick = function (event) {
+		if(!annotationEnabled || event.target.id === "annotate-button" || event.target.id == "body_value" || event.target.id == '"popover191731")/DIV[2]/FORM[1]/H6[2]'){
+			return
+		}
+		
+		let path = getPathTo(event.target);
+
+		targetXpath.value = path;
+
+		let element = getElementByXpath(path)
+
+		if (isImage(element)){
+			targetType.value ='Image'
+			targetValue.value = 'Image'
+		}
+
+		if (hasText(element)){
+			targetType.value ='Text'
+			textPositionStart.value = element.innerText.indexOf(targetValue.value);
+			textPositionEnd.value = element.innerText.indexOf(targetValue.value) + targetValue.value.length;
+		}
+	}
+
+	// Checks whether the element is an image or not
+	function isImage(element){
+		if (element.tagName == 'IMG'){
+			return true;
+		}
+		return false;
+	}
+
+	// Checks whether the element is an header or not
+	function isHeader(element){
+		if (element.tagName == 'H1' || element.tagName == 'H2' || element.tagName == 'H3' || element.tagName == 'H4' || element.tagName == 'H5' || element.tagName == 'H6'){
+			return true;
+		}
+		return false;
+	}
+
+	// Checks whether the element is a paragraph or not
+	function isParagraph(element){
+		if (element.tagName == 'P'){
+			return true;
+		}
+		return false;
+	}
+
+	// Checks whether the element has text in its innerText or not
+	function hasText(element){
+		if(element.innerText){
+			return true;
+		}
+		return false;
+	}
+
+	// Returns an element using its xpath
+	function getElementByXpath(path) {
+		return document.evaluate(`//${path}`, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	}
+	
+	// Returns the xpath of an element 
+	function getPathTo(element) {
+		if (element.id !== "") return 'id("' + element.id + '")';
+		if (element === document.body) return element.tagName;
+	
+		let ix = 0;
+		let siblings = element.parentNode.childNodes;
+		for (let i = 0; i < siblings.length; i++) {
+			let sibling = siblings[i];
+			if (sibling === element)
+				return getPathTo(element.parentNode) + "/" + element.tagName + "[" + (ix + 1) + "]";
+			if (sibling.nodeType === 1 && sibling.tagName === element.tagName) ix++;
+		}
+	}
+</script>

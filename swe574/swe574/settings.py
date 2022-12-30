@@ -39,7 +39,7 @@ DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 # header attacks. The ALLOWED_HOSTS represent the host/domain names
 # that the Django site can serve. The host names need to be specified 
 # for production.
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 # Environment variables come as a string. To retrieve ALLOWED_HOSTS
 # environment variable, comma-separated list of different hostnames  
@@ -54,6 +54,8 @@ ALLOWED_HOSTS.extend(
 # Application definition
 
 INSTALLED_APPS = [ 
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,6 +67,7 @@ INSTALLED_APPS = [
     'quiz',
     'learning_space',
     'rest_framework',
+    'tags'
 ]
 
 MIDDLEWARE = [
@@ -97,7 +100,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'swe574.wsgi.application'
+ASGI_APPLICATION = "swe574.asgi.application"
 
+CHANNEL_LAYERS={
+    'default':{
+        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -156,6 +165,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/static/'
 MEDIA_URL = '/static/media/'
+STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
 
 MEDIA_ROOT = '/vol/web/media'
 STATIC_ROOT = '/vol/web/static'
