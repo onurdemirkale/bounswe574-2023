@@ -5,6 +5,7 @@ from annotation.forms import AnnotationForm
 from datetime import datetime
 import json
 import requests
+import os
 
 
 def my_annotations_view(request):
