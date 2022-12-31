@@ -49,9 +49,9 @@ def learning_space_view(request, learning_space_id):
 
     activity_quizzes = []
 
-    for activity_quiz in quizzes.order_by('-date_created')[:5]:
+    for activity_quiz in quizzes.order_by('-published_date')[:5]:
         quiz_author = activity_quiz.author.user
-        quiz_date = activity_quiz.date_created.date()
+        quiz_date = activity_quiz.published_date.date()
         temp_tuple = (quiz_author, quiz_date)
         activity_quizzes.append(temp_tuple)
 
