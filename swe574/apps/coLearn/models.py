@@ -31,23 +31,3 @@ def create_colearn_user(sender, instance, created, **kwargs):
 def save_colearn_user(sender, instance, **kwargs):
     instance.colearnuser.save()
 
-
-
-
-
-# Quiz Question Model used by Quiz to store a Question and Answers created by a user.
-class QuizQuestion(models.Model):
-    question = models.CharField(max_length=500)
-    answers = ArrayField(models.CharField(max_length=200))
-    correct_answer = models.CharField(max_length=500)
-
-
-# Model used for Quizzes.
-class Quiz(models.Model):
-    title = models.CharField(max_length=100)
-    author = models.ForeignKey(CoLearnUser, on_delete=models.PROTECT)
-    description = models.CharField(max_length=500)
-    questions = models.ManyToManyField(QuizQuestion)
-    date_created = models.DateTimeField(auto_now_add=True)
-
-
