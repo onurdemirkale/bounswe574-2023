@@ -39,7 +39,12 @@ DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 # header attacks. The ALLOWED_HOSTS represent the host/domain names
 # that the Django site can serve. The host names need to be specified 
 # for production.
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+
+if DEBUG == False:
+    METADATA_URI = os.environ['ECS_CONTAINER_METADATA_URI']
+    container_metadata = requests.get(METADATA_URI).json()
+    ALLOWED_HOSTS.append(container_metadata['Networks'][0]['IPv4Addresses'][0])
 
 # Environment variables come as a string. To retrieve ALLOWED_HOSTS
 # environment variable, comma-separated list of different hostnames  
@@ -67,6 +72,7 @@ INSTALLED_APPS = [
     'quiz',
     'learning_space',
     'rest_framework',
+    'storages',
     'tags'
 ]
 
@@ -159,16 +165,39 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-# The location of the static files will be mapped to the proxy image. 
-# The reverse proxy will serve static files from these locations if
-# the URLs start with /static. 
+# If Debug is set to true, the static files and media are served locally.
+if DEBUG == True:
+    STATIC_URL = '/static/static/'
+    MEDIA_URL = '/static/media/'
+    STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
 
-STATIC_URL = '/static/static/'
-MEDIA_URL = '/static/media/'
-STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
+    MEDIA_ROOT = '/vol/web/media'
+    STATIC_ROOT = '/vol/web/static'
+    
+# If debug is set to false, the static files are served from the S3 Bucket.
+if DEBUG == False:
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/vol/web/media'
-STATIC_ROOT = '/vol/web/static'
+    STATICFILES_DIRS = [
+        BASE_DIR / "static"
+    ]
+
+    MEDIA_ROOT = BASE_DIR / "uploads"
+    MEDIA_URL = '/files/'
+
+    AWS_STORAGE_BUCKET_NAME = "swe574-group-1-static"
+    AWS_S3_REGION_NAME = "eu-central-1"
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+    STATICFILES_FOLDER = "static"
+    MEDIAFILES_FOLDER = "media"
+
+    STATICFILES_STORAGE = 'swe574.custom_storages.StaticFileStorage'
+    DEFAULT_FILE_STORAGE = 'swe574.custom_storages.MediaFileStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

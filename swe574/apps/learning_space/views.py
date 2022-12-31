@@ -138,6 +138,13 @@ def learning_space_edit_view(request, learning_space_id):
 def question_view(request, learning_space_id, question_id):
     question = Question.objects.get(pk=question_id)
     answers = question.answers.all()
+    
+    user_authenticated = False
+    user_id = None
+
+    if request.user.is_authenticated:
+        user_authenticated = True
+        user_id = request.user.id
 
     answerForm = AnswerForm(request.POST or None)
     if (answerForm.is_valid()):
@@ -151,7 +158,9 @@ def question_view(request, learning_space_id, question_id):
         'learning_space_id': learning_space_id,
         'question_id': question_id,
         'question': question,
-        'answers': answers
+        'answers': answers,
+        'user_authenticated': user_authenticated,
+        'user_id': user_id
     }
 
     return render(request, 'question/question.html', context)

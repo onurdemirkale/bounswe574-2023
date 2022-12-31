@@ -5,6 +5,7 @@ from annotation.forms import AnnotationForm
 from datetime import datetime
 import json
 import requests
+import os
 
 
 def my_annotations_view(request):
@@ -110,7 +111,7 @@ def create_annotation_view(request):
     }
 
     # Perform a POST request to the annotation server with the generated annotation
-    response = requests.post(annotation_server_uri, data=annotation)
+    response = requests.post("{}/annotation/create".format(annotation_server_uri), json={"data":annotation})
 
     # Return a bad request response if the annotation server returned a bad response
     if response.status_code > 399:
