@@ -50,7 +50,8 @@ def my_annotations_view(request):
 
     context = {
         'user_authenticated': user_authenticated,
-        'user_id': user_id
+        'user_id': user_id,
+        'annotations': annotations
     }
 
     return render(request, 'annotation/annotations.html', context)
