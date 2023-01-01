@@ -33,6 +33,21 @@ def my_annotations_view(request):
     # Obtain the user information
     coLearnUser = CoLearnUser.objects.get(pk=user_id)
     
+    annotations = []
+
+    for annotation in annotation_data:
+        
+        temp = {
+            "value": ((annotation.get("content")).get("body")).get("value"),
+            "date_created": datetime.fromisoformat(((annotation.get("content")).get("created"))),
+            "source_uri": ((annotation.get("content")).get("target")).get("source"),
+            "selector": ((annotation.get("content")).get("target")).get("selector"),
+            "type": ((annotation.get("content")).get("target")).get("type"),
+            "username" : coLearnUser.user.username,
+        }
+        
+        annotations.append(temp)
+
     context = {
         'user_authenticated': user_authenticated,
         'user_id': user_id
