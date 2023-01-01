@@ -36,17 +36,14 @@ crossorigin="anonymous"
           title="Annotate Textual Body"
           data-content='<form method="POST" action="/annotations/create/" enctype="multipart/form-data" novalidate>
 						{% csrf_token %}
-						<h6>Body</h6>
-						<input name="body_value" id="body_value" type="text"/>
-						<br><br/>
 						<h6>Target</h6>            
 						<label id="target_type_label" for="target_type">Type:</label>
 						<br/>
             <input name="target_type" id="target_type" readonly>
-						<label id="target_value_label" for="target_value">Target Value: </label>
-						<br/>
-            <input name="target_value" id="target_value" readonly>
-						<br></br>
+            <input name="target_value" id="target_value" style="visibility: hidden" readonly>
+						<h6>Annotation</h6>
+						<input name="body_value" id="body_value" type="text"/>
+						<br><br/>
 						<button id="annotate-button" class="btn btn-primary btn-sm" type="submit">Annotate</button>
 						<input name="target_xpath"  id="target_xpath" style="visibility: hidden" readonly>
 						<input name="text_position_start"  id="text_position_start" style="visibility: hidden" readonly>
