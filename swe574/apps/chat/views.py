@@ -9,9 +9,9 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
     users= CoLearnUser.objects.all().exclude(user_id=request.user.id)
+    url2=request.build_absolute_uri()
 
-
-    return render(request, "chat/index.html",{"users":users})
+    return render(request, "chat/index.html",{"users":users,"url2":str(url2)})
 
 @login_required
 def room(request,room_name):
