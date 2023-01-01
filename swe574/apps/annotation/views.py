@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 import requests
 import os
+from coLearn.models import CoLearnUser
 
 
 def my_annotations_view(request):
@@ -28,6 +29,9 @@ def my_annotations_view(request):
     response_json = response.json()
     
     annotation_data = response_json.get("data")
+    
+    # Obtain the user information
+    coLearnUser = CoLearnUser.objects.get(pk=user_id)
     
     context = {
         'user_authenticated': user_authenticated,
