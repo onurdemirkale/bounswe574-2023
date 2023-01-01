@@ -22,6 +22,13 @@ def my_annotations_view(request):
     # Obtain the current host
     host = request.get_host()
     
+    # Obtain all annotations created by the user using requests library
+    response = requests.get("{}/annotation/?creator=http://{}/user/{}".format(annotation_server_uri, host, user_id))
+    
+    response_json = response.json()
+    
+    annotation_data = response_json.get("data")
+    
     context = {
         'user_authenticated': user_authenticated,
         'user_id': user_id
