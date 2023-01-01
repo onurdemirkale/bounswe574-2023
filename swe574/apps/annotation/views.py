@@ -16,7 +16,12 @@ def my_annotations_view(request):
     user_authenticated = True
     user_id = request.user.id
     
-
+    # Obtain annotation server URI from environment variables
+    annotation_server_uri = os.environ['ANNOTATION_SERVER_URI']
+    
+    # Obtain the current host
+    host = request.get_host()
+    
     context = {
         'user_authenticated': user_authenticated,
         'user_id': user_id
