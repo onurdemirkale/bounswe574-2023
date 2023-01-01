@@ -27,14 +27,34 @@
     {%include 'navbar_unauth.html'%}
     {% endif %}
     <!-- Navbar End -->
-    				<!-- Main -->
-            <div class="album py-5 bg-light">
-              <div class="container">
-                <div class="row">
-                </div>
-              </div>
-            </div>
-          </main>
+
+
+		<div class="container">
+      <div class="py-3 text-center"></div>
+      {% if annotations %} {% for annotation in annotations %}
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">{{annotation.value}}</h5>
+					<!-- <p class="card-text">{{annotation.value}}</p> -->
+					<p class="card-text">
+						<small class="text-muted">
+              {{annotation.username}} at {{annotation.date_created}}
+            </small>
+            <br/>
+            <small class="text-muted">
+              Type: {{annotation.type}}
+            </small>
+            <br/>
+            <small class="text-muted">
+              Source: {{annotation.source_uri}}
+            </small>
+					</p>
+				</div>
+			</div>
+      <br />
+			{% endfor %}{% endif %}
+    </div>
+
 
     <!-- Footer -->
     {%include 'footer.html'%}

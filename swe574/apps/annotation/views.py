@@ -6,20 +6,52 @@ from datetime import datetime
 import json
 import requests
 import os
+from coLearn.models import CoLearnUser
 
 
 def my_annotations_view(request):
+    
+    if not request.user.is_authenticated:
+        return HttpResponseBadRequest
 
-    user_authenticated = False
-    user_id = None
+    user_authenticated = True
+    user_id = request.user.id
+    
+    # Obtain annotation server URI from environment variables
+    annotation_server_uri = os.environ['ANNOTATION_SERVER_URI']
+    
+    # Obtain the current host
+    host = request.get_host()
+    
+    # Obtain all annotations created by the user using requests library
+    response = requests.get("{}/annotation/?creator=http://{}/user/{}".format(annotation_server_uri, host, user_id))
+    
+    response_json = response.json()
+    
+    annotation_data = response_json.get("data")
+    
+    # Obtain the user information
+    coLearnUser = CoLearnUser.objects.get(pk=user_id)
+    
+    annotations = []
 
-    if request.user.is_authenticated:
-        user_authenticated = True
-        user_id = request.user.id
+    for annotation in annotation_data:
+        
+        temp = {
+            "value": ((annotation.get("content")).get("body")).get("value"),
+            "date_created": datetime.fromisoformat(((annotation.get("content")).get("created"))),
+            "source_uri": ((annotation.get("content")).get("target")).get("source"),
+            "selector": ((annotation.get("content")).get("target")).get("selector"),
+            "type": ((annotation.get("content")).get("target")).get("type"),
+            "username" : coLearnUser.user.username,
+        }
+        
+        annotations.append(temp)
 
     context = {
         'user_authenticated': user_authenticated,
-        'user_id': user_id
+        'user_id': user_id,
+        'annotations': annotations
     }
 
     return render(request, 'annotation/annotations.html', context)
