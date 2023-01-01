@@ -9,13 +9,13 @@ import os
 
 
 def my_annotations_view(request):
+    
+    if not request.user.is_authenticated:
+        return HttpResponseBadRequest
 
-    user_authenticated = False
-    user_id = None
-
-    if request.user.is_authenticated:
-        user_authenticated = True
-        user_id = request.user.id
+    user_authenticated = True
+    user_id = request.user.id
+    
 
     context = {
         'user_authenticated': user_authenticated,
